@@ -41,17 +41,14 @@ Here's a few places I hang out online:
 
 Oh yeah and I love collecting internet points. 😅
 
-![Stack Overflow](https://stackoverflow.com/users/flair/2066736.png?clean)
+[![Stack Overflow](https://stackoverflow.com/users/flair/2066736.png?clean)](https://stackoverflow.com/users/2066736/john?tab=profile)
 
-![Project Euler](https://projecteuler.net/profile/johnsonjo.png)
+[![Project Euler](https://projecteuler.net/profile/johnsonjo.png)](https://projecteuler.net)
 
 <style>
   p, ol, ul {
     font-size: 1.5rem;
   }
-
-
-
   img {
     max-width: 200px;
   }

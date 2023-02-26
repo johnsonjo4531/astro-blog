@@ -1,6 +1,7 @@
 import {defineConfig} from "astro/config";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import codesandbox from "remark-codesandbox";
 
 // https://astro.build/config
 import mdx from "@astrojs/mdx";
@@ -14,7 +15,18 @@ export default defineConfig({
   },
   integrations: [
     mdx({
-      remarkPlugins: [remarkMath],
+      remarkPlugins: [
+        remarkMath,
+        [
+          codesandbox,
+          {
+            mode: "iframe",
+            style: {
+              height: "700px",
+            },
+          },
+        ],
+      ],
       rehypePlugins: [rehypeKatex],
       gfm: true,
       shikiConfig: {

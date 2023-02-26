@@ -77,28 +77,6 @@ const { avatarSize = "medium" } = Astro.props;
     transition: all 0.3s cubic-bezier(0.39, 0.575, 0.565, 1);
   }
 
-  @media (max-width: 500px) {
-    /* .img-large {
-      --dim: 300;
-    } */
-    .sticky-header .avatar-container.large {
-      --dim: 30;
-      --img-size: 300px;
-      --uimg-size: 300;
-      width: 30px;
-    }
-  }
-
-  @media (max-width: 350px) {
-    /* .img-large {
-      --dim: 250;
-    } */
-    .sticky-header .avatar-container.large {
-      --dim: 25;
-      --img-size: 250px;
-      --uimg-size: 250;
-    }
-  }
   .is-sticky .no-animate-on-render {
     opacity: 0;
   }
