@@ -29,10 +29,15 @@ const { avatarSize = "large" } = Astro.props;
   import { observe } from "./Inview";
   const el = document.querySelector(".avatar-spinning-cube");
   if (el)
-    observe(el, ([e]) =>
-      e && e.intersectionRatio > 0
-        ? el.classList.toggle("animate", true)
-        : el.classList.toggle("animate", false)
+    observe(
+      el,
+      ([e]) =>
+        e && e.intersectionRatio > 0.5
+          ? el.classList.toggle("animate", true)
+          : el.classList.toggle("animate", false),
+      {
+        threshold: [0, 0.51, 1],
+      }
     );
 </script>
 <style>
