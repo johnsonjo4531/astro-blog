@@ -76,11 +76,11 @@ const { avatarSize = "large" } = Astro.props;
     animation: appear var(--animation-duration) 1 linear;
   }
   .avatar-container:has(.img-large) {
-    --dim: var(--dim, 500);
+    --dim: 500;
     --hex-padding: 5em;
   }
   .avatar-container:has(.img-medium) {
-    --dim: var(--dim, 250);
+    --dim: 250;
     --hex-padding: 5em;
   }
   .stage .img-large,
