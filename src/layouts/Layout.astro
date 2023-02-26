@@ -129,7 +129,9 @@ const { title } = Astro.props;
       0 var(--hexagon-slant)
     );
   }
-
+  .avatar-container:has(.img-large) {
+    --border-size: 40px;
+  }
   .avatar-container:has(.img-medium) {
     --dim: var(--uimg-size);
   }

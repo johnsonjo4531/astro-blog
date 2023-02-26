@@ -81,7 +81,8 @@
     width: calc(var(--stage-dim) * 1px);
     height: calc(var(--stage-dim) * 1px);
     transition: border-color;
-    border: 1px solid rgba(var(--opposite-bg), 0.3);
+    box-sizing: border-box;
+    border: var(--border-size, 5px) solid rgba(var(--opposite-bg), 0.3);
     backdrop-filter: blur(10px);
     background-color: rgba(var(--current-bg), 0.5);
     line-height: calc(var(--stage-dim) * 1px);
