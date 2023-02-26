@@ -1,4 +1,6 @@
 ---
+import Avatar from "./Avatar.astro";
+
 export interface Props {
   avatarSize?: "large" | "medium" | "small";
 }
@@ -9,13 +11,8 @@ const { avatarSize = "medium" } = Astro.props;
 <div class="top-sentinel"></div>
 <header class="sticky-header">
   <a href="/"
-    ><div class="avatar-container no-animate-on-render hexagon-clip">
-      <img
-        height="200px"
-        width="200px"
-        class={`hexagon-clip avatar img-${avatarSize}`}
-        src="/me-business-pic_compressed-cropped.png"
-      />
+    ><div class="header-avatar-container">
+      <Avatar animateOnce={true} avatarSize={avatarSize} />
     </div></a
   >
   <a class="link-no-style" href="/"
@@ -38,7 +35,10 @@ const { avatarSize = "medium" } = Astro.props;
     300
   );
 </script>
-<style>
+<style is:inline>
+  .no-animate-on-render {
+    opacity: 0;
+  }
   .sticky-header {
     z-index: 1000;
     position: sticky;
@@ -65,48 +65,46 @@ const { avatarSize = "medium" } = Astro.props;
     visibility: visible;
   }
 
+  .sticky-header .avatar-container > * {
+    --dim: 50;
+  }
+
   .sticky-header .avatar-container {
-    --img-size-temp: 50px;
-    width: 50px;
+    --dim: 50;
+    position: relative;
+    width: calc(var(--dim) * 1px);
+    height: calc(var(--dim) * 1px);
     transform: translateX(
-        calc(50vw - var(--img-size-temp) / 2 - var(--sticky-padding))
+        calc(50vw - calc(var(--dim) * 1px) / 2 - var(--sticky-padding))
       )
       translateY(calc(var(--img-size) / -2)) scale(calc(var(--uimg-size) / 60));
     transition: all 0.3s cubic-bezier(0.39, 0.575, 0.565, 1);
   }
 
   @media (max-width: 500px) {
-    .img-large {
-      width: 300px;
-    }
+    /* .img-large {
+      --dim: 300;
+    } */
     .sticky-header .avatar-container:has(.img-large) {
+      --dim: 30;
+      --img-size: 300px;
+      --uimg-size: 300;
       width: 30px;
-      transform: translateX(
-          calc(50vw - var(--img-size) / 2 - var(--sticky-padding))
-        )
-        scale(calc(var(--uimg-size) / 60))
-        translateY(calc(var(--img-size) / -2));
-      transition: all 0.3s cubic-bezier(0.39, 0.575, 0.565, 1);
     }
   }
 
   @media (max-width: 350px) {
-    .img-large {
-      width: 250px;
-    }
+    /* .img-large {
+      --dim: 250;
+    } */
     .sticky-header .avatar-container:has(.img-large) {
-      width: 25px;
-      transform: translateX(
-          calc(50vw - var(--img-size) / 2 - var(--sticky-padding))
-        )
-        scale(calc(var(--uimg-size) / 60))
-        translateY(calc(var(--img-size) / -2));
-      transition: all 0.3s cubic-bezier(0.39, 0.575, 0.565, 1);
+      --dim: 25;
+      --img-size: 250px;
+      --uimg-size: 250;
     }
   }
-  .no-animate-on-render.no-animate-on-render {
+  .no-animate-on-render {
     opacity: 0;
-    transition: opacity 0.1s;
   }
 
   .sticky-header img {
@@ -114,7 +112,7 @@ const { avatarSize = "medium" } = Astro.props;
     height: auto;
   }
 
-  a.link-no-style {
+  .sticky-header a.link-no-style {
     color: inherit;
     text-decoration: none;
   }
@@ -122,67 +120,20 @@ const { avatarSize = "medium" } = Astro.props;
   .sticky-header.is-sticky .avatar-container {
     transform: translateY(0) translateX(0) scale(1);
     width: 50px;
+    height: 50px;
   }
 
-  .sticky-header.is-sticky .avatar-container::before {
+  .header-avatar-container {
+    position: relative;
+  }
+
+  .sticky-header.is-sticky .header-avatar-container .avatar-container {
     background: var(--accent-gradient);
     background-size: 400%;
     background-position: 0%;
   }
 
-  .avatar-container::before {
-    position: absolute;
-    content: "";
-    z-index: 3;
-    top: -5px;
-    bottom: -5px;
-    left: -5px;
-    right: -5px;
-    /* height: 110cqh;
-    width: 110%; */
-    backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.8);
-    --hexagon-slant: 25%;
-    -webkit-clip-path: polygon(
-      50% 0%,
-      100% var(--hexagon-slant),
-      100% calc(100% - var(--hexagon-slant)),
-      50% 100%,
-      0 calc(100% - var(--hexagon-slant)),
-      0 var(--hexagon-slant)
-    );
-    clip-path: polygon(
-      50% 0%,
-      100% var(--hexagon-slant),
-      100% calc(100% - var(--hexagon-slant)),
-      50% 100%,
-      0 calc(100% - var(--hexagon-slant)),
-      0 var(--hexagon-slant)
-    );
-  }
-  .avatar-container::before {
-    position: absolute;
-    content: "";
-    z-index: 1;
-    top: -5px;
-    bottom: -5px;
-    left: -5px;
-    right: -5px;
-    /* height: 110cqh;
-    width: 110%; */
-    background-color: rgba(var(--current-bg), 0.7);
-    --hexagon-slant: 25%;
-    clip-path: polygon(
-      50% 0%,
-      100% var(--hexagon-slant),
-      100% calc(100% - var(--hexagon-slant)),
-      50% 100%,
-      0 calc(100% - var(--hexagon-slant)),
-      0 var(--hexagon-slant)
-    );
-  }
-
-  .top-sentinel {
+  .sticky-header .top-sentinel {
     position: absolute;
     top: 0;
     height: 10px;

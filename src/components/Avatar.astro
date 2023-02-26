@@ -2,14 +2,19 @@
 import SpinningCube from "./SpinningCube.astro";
 export interface Props {
   avatarSize?: string;
+  animateOnce: true;
 }
 
-const { avatarSize = "large" } = Astro.props;
+const { avatarSize = "large", animateOnce = false } = Astro.props;
 ---
 
 <!-- <div class="fit-content">
-  <div class="avatar-container no-animate-on-render hexagon-clip"> -->
-<div class="avatar-container avatar-spinning-cube no-animate-on-render">
+  <div class="avatar-container hexagon-clip"> -->
+<div
+  class={`avatar-container avatar-spinning-cube ${
+    animateOnce ? "animate-once-inview" : "animate-inview"
+  }`}
+>
   <SpinningCube>
     <img
       class={`hexagon-clip hidden-opacity avatar img-${avatarSize}`}
@@ -27,8 +32,20 @@ const { avatarSize = "large" } = Astro.props;
 </div> -->
 <script>
   import { observe } from "./Inview";
-  const el = document.querySelector(".avatar-spinning-cube");
-  if (el)
+
+  const once = document.querySelectorAll(".animate-once-inview");
+  const animate = document.querySelectorAll(".animate-inview");
+  once.forEach((el) =>
+    observe(
+      el,
+      ([e]) =>
+        e && e.intersectionRatio > 0.5 && el.classList.toggle("animate", true),
+      {
+        threshold: [0, 0.51, 1],
+      }
+    )
+  );
+  animate.forEach((el) =>
     observe(
       el,
       ([e]) =>
@@ -38,7 +55,8 @@ const { avatarSize = "large" } = Astro.props;
       {
         threshold: [0, 0.51, 1],
       }
-    );
+    )
+  );
 </script>
 <style>
   @keyframes hex-appear {
@@ -80,22 +98,22 @@ const { avatarSize = "large" } = Astro.props;
   .animate.avatar-container.animate .img-medium {
     animation: appear var(--animation-duration) 1 linear;
   }
-  .avatar-container:has(.img-large) {
+  .avatar-container:has(.img-large):not(.avatar-spinning-cube) {
     --dim: 500;
-    --hex-padding: 5em;
+    --hex-padding: calc(var(--dim) / 100 * 1em);
   }
-  .avatar-container:has(.img-medium) {
+  .avatar-container:has(.img-medium):not(.avatar-spinning-cube) {
     --dim: 250;
-    --hex-padding: 5em;
   }
-  .stage .img-large,
+  .avatar-container {
+    --hex-padding: calc(var(--dim) / 100 * 1em);
+  }
+  .sticky-header .avatar-container .stage .img-large,
   .stage .img-medium {
     --opacity: 0;
     z-index: 4;
   }
   .avatar-spinning-cube img {
-    transform: translateY(calc(var(--translate-y) * -1))
-      rotateX(calc(var(--rotation) * -1));
   }
   .fit-content {
     width: fit-content;

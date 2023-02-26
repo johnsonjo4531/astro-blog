@@ -74,13 +74,74 @@ const { title } = Astro.props;
   body {
     margin: 0;
   }
+  .avatar-container:has(.img-large) {
+    --dim: var(--uimg-size);
+  }
+
+  .sticky-header .avatar-container:has(.animate) {
+    position: absolute;
+    content: "";
+    z-index: 1;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    /* height: 110cqh;
+    width: 110%; */
+    backdrop-filter: blur(10px);
+    /* background-color: rgba(255, 255, 255, 0.8); */
+    --hexagon-slant: 25%;
+    -webkit-clip-path: polygon(
+      50% 0%,
+      100% var(--hexagon-slant),
+      100% calc(100% - var(--hexagon-slant)),
+      50% 100%,
+      0 calc(100% - var(--hexagon-slant)),
+      0 var(--hexagon-slant)
+    );
+    clip-path: polygon(
+      50% 0%,
+      100% var(--hexagon-slant),
+      100% calc(100% - var(--hexagon-slant)),
+      50% 100%,
+      0 calc(100% - var(--hexagon-slant)),
+      0 var(--hexagon-slant)
+    );
+  }
+  .sticky-header .avatar-container:has(.animate) {
+    position: absolute;
+    content: "";
+    z-index: 1;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    /* height: 110cqh;
+    width: 110%; */
+    background-color: rgba(var(--current-bg), 0.7);
+    --hexagon-slant: 25%;
+    clip-path: polygon(
+      50% 0%,
+      100% var(--hexagon-slant),
+      100% calc(100% - var(--hexagon-slant)),
+      50% 100%,
+      0 calc(100% - var(--hexagon-slant)),
+      0 var(--hexagon-slant)
+    );
+  }
+
+  .avatar-container:has(.img-medium) {
+    --dim: var(--uimg-size);
+  }
   .img-large {
-    --uimg-size: 500;
-    --img-size: min(500px, calc(100vw - var(--hex-padding, 0px) * 2));
-    width: 500px;
-    height: 500px;
+    --default-udim: 500;
+    --default-dim: var(--dim, 500px);
+    --udim: var(--stage-dim, 500);
+    --dim: calc(var(--stage-dim, 500) * 1px);
+    width: var(--dim);
+    height: var(--dim);
     max-width: 500px;
-    max-width: var(--img-size);
+    max-width: var(--dim, var(--img-size), 500px);
   }
   .img-medium {
     --uimg-size: 250;

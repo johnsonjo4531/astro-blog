@@ -23,9 +23,10 @@
     --scale: 0.65;
     --stage-dim: var(--dim, 200);
     --rotation: 14deg;
-    --translate-y: 35px;
+    --translate-y: 35.5px;
     --final-scale: scale(1);
-    --final-transform: translateY(var(--translate-y)) rotateX(var(--rotation));
+    --final-transform: translateY(var(--translate-y) * var(--dim) / 500)
+      rotateX(var(--rotation));
     transform: var(--final-transform);
     /* transform: ; */
 
@@ -79,9 +80,9 @@
     position: absolute;
     width: calc(var(--stage-dim) * 1px);
     height: calc(var(--stage-dim) * 1px);
-    border: 1px solid #ccc;
     transition: border-color;
-    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(var(--opposite-bg), 0.3);
+    background: rgba(var(--current-bg), 0.8);
     line-height: calc(var(--stage-dim) * 1px);
     text-align: center;
   }
@@ -111,19 +112,24 @@
   .cubespinner .face6 {
     transform: rotateX(-90deg) translateZ(calc(var(--stage-dim) / 2 * 1px));
   }
+  .img-holder {
+    position: relative;
+  }
 </style>
 
-<div
-  class="stage"
-  style="width: calc(var(--stage-dim) * 1px); height: calc(var(--stage-dim) * 1px);"
->
-  <div class="cubespinner">
-    <div class="face1"></div>
-    <div class="face2"></div>
-    <div class="face3"></div>
-    <div class="face4"></div>
-    <div class="face5"></div>
-    <div class="face6"></div>
+<div class="img-holder">
+  <div
+    class="stage"
+    style="width: calc(var(--stage-dim) * 1px); height: calc(var(--stage-dim) * 1px);"
+  >
+    <div class="cubespinner">
+      <div class="face1"></div>
+      <div class="face2"></div>
+      <div class="face3"></div>
+      <div class="face4"></div>
+      <div class="face5"></div>
+      <div class="face6"></div>
+    </div>
   </div>
   <slot />
 </div>
