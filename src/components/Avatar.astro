@@ -11,9 +11,9 @@ const { avatarSize = "large", animateOnce = false } = Astro.props;
 <a href="/"
   ><div>
     <div
-      class={`avatar-container avatar-spinning-cube ${
+      class={`avatar-container avatar-spinning-cube animate ${
         animateOnce ? "animate-once-inview" : "animate-inview"
-      }`}
+      } ${avatarSize}`}
     >
       <SpinningCube>
         <img
@@ -94,11 +94,11 @@ const { avatarSize = "large", animateOnce = false } = Astro.props;
   .animate.avatar-container.animate .img-medium {
     animation: appear var(--animation-duration) 1 linear;
   }
-  .avatar-container:has(.img-large):not(.avatar-spinning-cube) {
+  .avatar-container.large:not(.avatar-spinning-cube) {
     --dim: 500;
     --hex-padding: calc(var(--dim) / 100 * 1em);
   }
-  .avatar-container:has(.img-medium):not(.avatar-spinning-cube) {
+  .avatar-container.medium:not(.avatar-spinning-cube) {
     --dim: 250;
   }
   .avatar-container {

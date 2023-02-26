@@ -23,26 +23,42 @@ const { blogPost } = Astro.props;
 </section>
 
 <style>
-  .blog-post:has(a:hover) {
-    animation: mesmerize 1s linear 1;
-  }
-
-  @keyframe mesmerize {
-    0% {
-      --border-color: rgba(var(--accent), 1);
+  @keyframes mesmerize {
+    33% {
+      --border-color: rgba(var(--current-bg), 0.25);
+      border-color: var(--border-color);
     }
 
-    50% {
-      --border-color: var(--warning-color);
+    66% {
+      --border-color: rgba(var(--accent), 0.25);
+      border-color: var(--border-color);
     }
 
     100% {
-      --border-color: rgba(var(--accent-bg), 0.05);
+      --border-color: rgba(var(--accent-bg), 0.15);
+      border-color: var(--border-color);
+    }
+  }
+
+  @keyframes mesmerize-bg {
+    33% {
+      --border-color: rgba(var(--current-bg), 0.35);
+      background-color: var(--border-color);
+    }
+
+    66% {
+      --border-color: rgba(var(--accent), 0.35);
+      background-color: var(--border-color);
+    }
+
+    100% {
+      --border-color: rgba(var(--accent-bg), 0.15);
+      background-color: var(--border-color);
     }
   }
 
   .blog-post {
-    transition: all 1s;
+    --animation-duration: 3s;
     position: relative;
     display: block;
     cursor: pointer;
@@ -55,11 +71,17 @@ const { blogPost } = Astro.props;
     backdrop-filter: blur(3px);
     padding: var(--blog-post-padding);
     border-radius: 12px;
-    border: 12px solid var(--border-color);
+    border: 12px solid;
+    border-color: var(--border-color);
     text-decoration: none !important;
     cursor: pointer;
     margin: 1.4em 0;
   }
+
+  .blog-post:hover {
+    animation: mesmerize var(--animation-duration) linear 1;
+  }
+
   .blog-post > a {
     position: absolute;
     top: 0;
@@ -73,12 +95,14 @@ const { blogPost } = Astro.props;
   }
 
   .highlighted-card-section {
-    transition: all 1s;
     display: block;
     background-color: var(--border-color);
     padding: var(--blog-post-padding);
     margin: 0 calc(-1 * var(--blog-post-padding))
       calc(-1 * var(--blog-post-padding)) calc(-1 * var(--blog-post-padding));
   }
-</style>
 
+  .blog-post:hover .highlighted-card-section {
+    animation: mesmerize-bg var(--animation-duration) linear 1;
+  }
+</style>
