@@ -1,0 +1,67 @@
+<style>
+  css-doodle {
+    height: 100vh;
+    width: 100vw;
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+  }
+  css-doodle:after {
+    backdrop-filter: blur(1px);
+    background-color: rgba(255, 255, 255, 0.2);
+    content: "";
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+  @media (prefers-color-scheme: dark) {
+    css-doodle:after {
+      background-color: rgba(var(--dark-color-scheme), 0.2);
+    }
+  }
+</style>
+
+<script>
+import "css-doodle";
+
+const doodle: null | Element & {update(css?: string): void} = document.querySelector('css-doodle');
+
+/* update styles and refresh */
+doodle?.update(`
+  :doodle {
+    --uwidth: 3600;
+    --uheight: 1200;
+    --width: calc(var(--uwidth) * 1px);
+    --height: calc(var(--uheight) * vh);
+    width: var(--width);
+    height: var(--height);
+  }
+  :container {
+    grid-gap: 0.0001%;
+    transform: skewX(10deg) scale(2.5);
+    background: black;
+  }
+  @grid: 14 / var(--width) var(--height);
+  @shape: hexagon;
+  background-color: hsla(
+    120, calc(60% * (@x + @y) / (@max-row + @max-col)), calc(100% * (@x + @y) / (@max-row + @max-col)),
+    0.8
+  );
+  color: #fff;
+  margin-left: -150px;
+  margin-top: -150px;
+  transform: scale(1.15) translateX(calc(-0.00583 * var(--width) * 1.25 * @i + 100%)) translateY(cal(var(--width) * @max-row / 100));
+`);
+
+</script>
+
+
+<css-doodle class="doodle-large">
+</css-doodle>

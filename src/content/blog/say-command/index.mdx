@@ -1,0 +1,288 @@
+---
+title: Getting your Mac to Speak Large Texts
+date: 2020-12-11T03:02:37.776Z
+description: An intro to say, pandoc, homebrew, ffmpeg and more.
+published: true
+tags:
+  - bash
+  - TTS
+---
+
+First of all this tutorial will only be useful if you have a Mac.
+It also assumes some very basic familiarity with the command line
+(I won't explain how to change directories with `cd`). But,
+this article will explain a few unix and command line features along the way
+to help you be more proficient in Unix.
+
+## Dependencies
+
+Here are the dependencies used in the article you may or may not need them
+Depending on how far you choose to go.
+Expand the below accordions to read what the dependencies are for
+and for installation instructions.
+
+<details>
+  <summary>Homebrew</summary>
+  Install from <a href="https://brew.sh/">homebrew's website</a>.<p>This is optional I provide other links to downloads. This is a package manager for mac. It allows you to install programs from the command line. It makes installing programs quite easy and you will only need it to install the other dependencies in this blog post.</p>
+</details>
+
+<details>
+  <summary>pandoc</summary>
+  <p>
+    You'll only need this if your text isn't in plain text. If you have brew
+    this should be as simple as:
+  </p>
+  <pre>
+    <code>brew install pandoc</code>
+  </pre>
+  <p>
+    Otherwise install pandoc from{" "}
+    <a href="https://pandoc.org/installing.html">pandoc's website</a>
+  </p>
+</details>
+
+<details>
+  <summary>ffmpeg</summary>
+  <p>If you installed brew this should be as simple as:</p>
+  <pre>
+    <code>brew install ffmpeg</code>
+  </pre>
+  <p>
+    Otherwise install from <a href="https://ffmpeg.org/">ffmpeg's website</a>.
+  </p>
+</details>
+
+## Intro to Say
+
+Now on to using text to speech commands.
+The simplest way to use Text To Speech (TTS) on Mac
+is through the Mac terminal's `say` command.
+
+```bash
+say 'I can say anything'
+```
+
+Alot can be learned from man pages (man is short for manual).
+Why don't we look at say's man page. To get to a commands man
+page you just type `man` followed by a space and then the command.
+(If a command doesn't have a manual page then you could get some brief
+help with the command generally by typing the command followed by a space and then
+the `--help` flag)
+
+```bash
+man say
+```
+
+Scroll down to the options and look at some of them.
+For example we'll use the `-o` flag for output
+and the `-v` flag for using different voices.
+When you are done looking at the manual page hit `q` to close it.
+
+As pointed out by the man page, if you want to know all the voices type
+use the `v` flag like so:
+
+```bash
+say -v ?
+```
+
+Let's get only the english voices with grep. Here we will use
+the pipe command which takes the standard output (stdout) from one command
+which here is the `say` command and puts it into the standard input (stdin)
+for the next command which here is the `grep` command:
+
+```bash
+say -v ? | grep en_
+```
+
+Let's try Daniel's voice.
+
+```bash
+say -v Daniel Hello, my name is Daniel and I am a British-English voice.
+```
+
+Now we'll try outputting the voice. The main output type that you can
+use on the `say` command has the `.aiff` extension. Let's output that last command to
+a file.
+
+```bash
+say -o daniel.aiff -v Daniel Hello, my name is Daniel and I am a British-English voice.
+```
+
+The `open` command will open a file or directory in the default application
+although you can target a specific application in your applications folder
+with the `-a` flag. Let's open the sound file in quicktime player:
+
+```bash
+open -a 'Quicktime Player' daniel.aiff
+```
+
+Next if you're done listening to the file you can remove it with the `rm` command. <aside class="aside-warning">
+`rm` is a possibly very dangerous command especially when used improperly. By default it deletes files
+from your system permanently and does not send them to the trash this alone is dangerous. By default
+`rm` will not remove directories (atleast on mac) so this gives it some degree of safety when used without
+flags, but if you you throw on the recursive `-r` flag it will
+recursively permanently delete the whole folder and **all** of it's contents and this can be catastrophic,
+because you if you delete the wrong things like `/` (which is the root of your computer) you can brick your
+computer.</aside>
+
+```bash
+rm daniel.aiff
+```
+
+For a safer alternative to deleting things with `rm`
+try just opening the current directory in your finder
+with the following command and then deleting the file from
+the finder window.
+
+```bash
+open .
+```
+
+Don't forget the `.` in the above command the `.` in Unix
+and Linux stands for the current directory.
+
+## Downloading Higher Quality Voices
+
+Some voices (mainly the Siri voices), can't be used from the `say` command, but
+you can download higher quality voices on Mac through the accesibility options
+which are located at `System Preferences > Accessibility > Speech`. You then
+click on the system voice and click `customize` to download new voices, some of
+them will let you check a box with downloading a higher quality voice.
+
+## Piping a Text File to Text To Speech.
+
+Let's create a simple text file named `helloWorld.txt`: <aside>The `echo` command outputs the string after it to standard out (stdout).
+You can experiment with the echo command by typing something like `echo 'Hello World!'`.</aside>
+
+```bash
+echo 'Hello World is a common first program.' > helloWorld.txt
+```
+
+The `>` sign is used for file redirection, notice how the arrow points toward the file name
+and away from the command `echo` this is because it is redirecting the standard text output
+from the `echo` into the file `helloWorld.txt`.<aside class="aside-warning">One thing that can possibly
+go wrong when using file redirection is accidentally overwriting a file. When using the `>` flag the
+file being written to will be overwritten if the file with that name exists. You need to be careful
+not to overwrite files you need, because it will permanently delete them and not even send the overwritten
+file to the trash. Sometimes in cases like these the command line can be unforgiving.</aside>
+
+If we want the say command to use this `helloWorld.txt` file we can redirect the file into
+the say commands standard input with the `<` sign.
+
+```bash
+say -v Daniel < helloWorld.txt
+```
+
+An alternative to the above command is to pipe from the `cat` command. Let's try running cat
+by itself to see what it outputs the file contents to stdout.
+
+```bash
+cat helloWorld.txt
+```
+
+Then we can pipe that to the `say` command.
+
+```bash
+cat helloWorld.txt | say -v Daniel
+```
+
+## Converting a .docx file to Plain Text for TTS.
+
+Pandoc will come in handy now for helping us convert to and from document formats.
+If you don't already have it go back to the top in the dependencies.
+
+Let's get look at the man pages for pandoc real quick. If you scroll down to the 'Using pandoc'. <aside>
+with man pages you can search them you using `/` and then a search term; you
+can then click `n` to go to the next match and `?` + <kbd>enter</kbd> to go to
+the previous match. Don't forget to hit `q` to quit the man page.</aside>
+
+```bash
+man pandoc
+```
+
+In the 'Using pandoc' section of the man page it has an example of the most basic and versatile command
+Pandoc's example is similar to the below command which converts a `.docx` file to `.txt`: <aside class="aside-warning">
+This is yet another command that could overwrite your file. If you accidentally put your input file in place
+of an output file you could overwrite your document with the other file, so be careful and always have backups!</aside>
+
+```bash
+pandoc -o temp.txt input.docx
+```
+
+Pandoc is able to infer the filetype from the extension of the file. Our input file here given
+as `input.docx`, which is the first argument after all the options, could be replaced with
+a file of any of the supported input file types from pandoc `.docx`, `.md`, `.epub`, etc.
+Similarly the output (signified by the `-o` flag) can be replaced with a file with filetype
+allowed by any of the possible output filetypes.
+
+If you looked at your text output file you may notice that it has headings like this:
+
+```txt
+Example Heading
+---------------
+```
+
+This helps pandoc keep the structure of the document between formats, but that won't be very good for turning
+the text file into speech, so
+we can make it plain text instead of markdown/asciidoc (whatever `.txt`'s are by default) with the `-t`
+flag which stands for type. You can consult the man page for pandoc to see all the different types the `-t` flag
+can take. <aside>when searching for a flag on a man page sometimes it is helpful to type something like
+`/-t` followed by a space and then the <kbd>enter</kbd> key.</aside> Here we'll use the `plain` text type.
+
+```bash
+pandoc -t plain -o temp.txt input.docx
+```
+
+If you look at that output it is a nice plain text document that could be useful for text to speech.
+Let's speak that ouput.
+
+```bash
+say -v Daniel -o temp.aiff < temp.txt
+```
+
+## Converting the .aiff to .mp3 with ffmpeg
+
+Pandoc is to text documents as ffmpeg is to audio and video files. Meaning using ffmpeg
+you can take pretty much any audio or video file and convert it to another.
+
+ffmpeg's api is pretty similar to pandoc's, but instead of using `-o` for the output you use
+`-i` for the input. Since things like this can make using commands confusing sometimes it is
+recommended to consult the man page or atleast use the `--help` flag when your unsure what flags do.
+You can use the man page for ffmpeg if you want to, but for brevities sake I'll just show you how
+to take our `temp.aiff` file as input and output `output.mp3` as output.
+
+```bash
+ffmpeg -i temp.aiff output.mp3
+```
+
+## Putting Everything Together
+
+So let's put all three commands for TTS in sequence and open Quicktime Player: <aside>The `&&` command says only do the next command
+if the previous command succeeded. The `\` allows us to escape the linebreaks so we can do multiple lines</aside> You'll
+probably want to put all these lines of commands in a text editor before executing them, so that you can edit them before hand.
+
+```bash
+pandoc -t plain -o temp.txt input.docx \
+    && say -v Daniel -o temp.aiff < temp.txt \
+    && ffmpeg -i temp.aiff output.mp3 \
+    && rm temp.aiff && rm temp.txt \
+    && open -a 'Quicktime Player' output.mp3
+```
+
+One last note in the above code block all you need to supply to the command is some
+sort of document in place of `input.docx` and possibly a voice denoted here by `say -v Daniel`. When the command is done running you'll get an `output.mp3`.
+
+Here's the above code annotated in case you forgot anything:
+
+```bash
+# Convert doc to plain text
+pandoc -t plain -o temp.txt input.docx \
+    # Speak the document into a audio file format
+    && say -v Daniel -o temp.aiff < temp.txt \
+    # Convert to mp3
+    && ffmpeg -i temp.aiff output.mp3 \
+    # Remove our temp files
+    && rm temp.aiff && rm temp.txt \
+    # Open quicktime player
+    && open -a 'Quicktime Player' output.mp3
+```

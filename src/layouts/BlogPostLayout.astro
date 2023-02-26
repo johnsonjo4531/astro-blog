@@ -1,0 +1,15 @@
+---
+import BlogLayout from "./BlogLayout.astro";
+export interface Props {
+  avatarSize?: "small" | "large" | "medium";
+  title?: string;
+}
+
+const { avatarSize = "medium", title = "Howdy!!" } = Astro.props;
+---
+
+<BlogLayout title={title} avatarSize={avatarSize}>
+  <slot />
+</BlogLayout>
+
+<style></style>

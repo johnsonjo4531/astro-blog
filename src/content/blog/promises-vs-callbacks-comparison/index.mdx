@@ -1,0 +1,124 @@
+---
+title: When Should I use Promises over Callbacks
+date: 2020-12-11T06:18:31.594Z
+description: >
+  So you've heard about promises well what's
+  the major advantage of them compared to callbacks.
+  It might seem there isn't any huge advantage to them
+  at least at first glance but there are some properties of
+  promises that aren't true of at least some or all callbacks
+  which make them a handy tool to use in your JavaScript tool belt.
+published: false
+tags:
+  - promises
+  - callbacks
+  - javascript
+---
+
+tldr: Promises have alot of interesting properties that make them
+useful for wrapping a singular value at some given point in time
+giving them some advantages over callbacks for async programming.
+
+So you've heard about [promises][promises], well what's
+the major advantage of them compared to callbacks.
+It might seem there isn't any huge advantage to them
+atleast at first glance but there are some properties of
+promises that aren't true of atleast some or most callback patterns.
+Just having the guarentees that a Promise will always behave
+the same in ways that a callback might not
+makes promises a handy tool to use for single values that come
+over at any given point in time.
+
+Now, promises aren't really a complete replacement for callbacks either.
+Really it's an apple and oranges kind of comparison. Now this is because
+for the most part callbacks are alot more general and have a lot more properties
+than promises. So, this is to say that pretty much Promises are kind of a special
+case of a callback pattern. In fact with your keen eyes you may have noticed that
+all promises use callbacks in the first place.
+
+So, why even use promises at all if they are in the whole less powerful? Well, 
+in software engineering having a smaller API surface and a smaller range of
+possibilities believe it or not is actually a good thing for the most part.
+Why? Because, you can make more guarantees about your program. You can also
+get additional features, because of the guarantees made and because by narrowing your focus and focusing on the smaller
+API surface and building off of it (like make little utility functions and such).
+
+As an example, this might be the reason you see people going with typed languages (like TypeScript, Haskell, C#, Go, or Java maybe) over largely
+untyped languages (like JavaScript and Python). You may say you love being able to define any type
+possible for your functions and it makes it so easy to just code and forget about the compiler throwing errors.
+But, as things change and as your project grows you may want those guarantees.
+
+Honestly, callbacks were something that took me a long time to properly grok, and I found my self asking questions like
+how would I make my own callback taking functions like map and reduce or filter. Thanks to resources like this one which is a [list of interactive exercises on functional JS by Jafar Husain](http://reactivex.io/learnrx/)
+I was able to make a lot better grasp of how powerful callbacks really are.
+
+Reading things like [Kriskowal's General Theory of Reactivity (GTOR)](https://github.com/kriskowal/gtor) will give you a better understanding of where different primitives of async programming come in, such as promises.
+
+I have an overview of how callbacks fulfill all of these axes or atleast can be used to handle all of them in my post [Callbacks as handling both Spatial and Temporal as well as Singular and Plural Axes](./callbacks-spatial-temporal-and-singular-plural)
+
+
+
+1. A promise always has a .then that accepts a callback function.
+2. A promise always has a .catch that accepts a callback function
+   and acts like a `catch` block from a `try`/`catch`.
+3. A promise always has a .finally which acts as a `finally` block
+   from a `try`/`catch`/`finally`.
+4. You can `await` a promise using async functions.
+5. You have utilities builtin to JavaScript at your disposal when
+   working with promises.
+
+## 1. .then methods
+
+`.then` is a method that fires your callback once a promise is resolved (finished). This com
+
+## 2. .catch methods
+
+`catch` methods and error handling with Promises is probably its biggest
+advantage over callbacks. So, how do you handle errors in callbacks.
+
+```js codesandbox=vanilla
+function myCallbackTakingFunction(cb) {
+  setTimeout(cb, 3000);
+}
+```
+
+## 5. JavaScript Builtin Utilities
+
+You have utilities builtin to JavaScript at your disposal when working with promises which at the moment are:
+
+### Promise.all:
+
+`Promise.all` allows you to await several Promises concurrently.
+Notice how this means the below code executes in the time
+of the longest timeout and not the addition of all the timeouts:
+
+```js codesandbox=vanilla
+const timeout = ms => new Promise(res => setTimeout(res, ms));
+(async () => {
+  const time = Date.now();
+  await Promise.all([timeout(1000), timeout(3000), timeout(2500)]);
+  console.log(`Executed in ${Date.now() - time}ms`);
+})();
+```
+
+Which is as opposed to something like the following which runs sequentially. Notice
+how the time this takes to complete is the sum of all timeouts.
+
+```js codesandbox=vanilla
+const timeout = ms => new Promise(res => setTimeout(res, ms));
+(async () => {
+  const time = Date.now();
+  await timeout(1000);
+  await timeout(3000);
+  await timeout(2500);
+  console.log(`Executed in ${Date.now() - time}ms`);
+})();
+```
+
+- Promise.allSettled
+- Promise.any
+- Promise.race
+- Promise.reject
+- Promise.resolve
+
+[promises]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise

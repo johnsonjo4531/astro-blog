@@ -1,0 +1,17 @@
+---
+import BlogLayout from "../layouts/BlogLayout.astro";
+import { getCollection } from "astro:content";
+import Card from "../components/Card.astro";
+import Footer from "../components/Footer.astro";
+// Get all entries from a collection. Requires the name of the collection as an argument.
+const blogEntries = await getCollection("blog", (x) => x.data.published);
+---
+
+<BlogLayout title="Howdy!!">
+  <div class="container">
+    {blogEntries.map((blogPostEntry) => <Card blogPost={blogPostEntry} />)}
+  </div>
+  <Footer avatarSize={"large"} />
+</BlogLayout>
+
+<style></style>

@@ -1,0 +1,38 @@
+---
+import Avatar from "./Avatar.astro";
+import LinkButton from "./LinkButton.astro";
+
+export interface Props {
+  avatarSize?: "large" | "medium";
+}
+
+const { avatarSize = "large" } = Astro.props;
+---
+
+<footer>
+  <div class="container">
+    <section>
+      <h1 class="text-center text-gradient">Jigs' Blog</h1>
+      <h2 class="text-center">My name is John Johnson.</h2>
+      <h3 class="text-center">
+        But my friends call me <span class="text-opposite-gradient">Jigs!</span>
+      </h3>
+      <Avatar avatarSize={avatarSize} />
+      <h4>Would you like to Read More:</h4>
+      <LinkButton to="/blog">Posts</LinkButton>
+      <LinkButton to="/">About Me</LinkButton>
+    </section>
+  </div>
+</footer>
+
+<style>
+  footer {
+    padding-bottom: 7vh;
+  }
+  footer .avatar-container {
+    display: block;
+    margin: 0 auto;
+    width: fit-content;
+    padding: 1.7em;
+  }
+</style>

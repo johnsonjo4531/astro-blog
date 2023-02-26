@@ -1,25 +1,20 @@
 ---
-import type { CollectionEntry } from "astro:content";
-
 export interface Props {
-  blogPost: CollectionEntry<"blog">;
+  link: string;
+  title: string;
+  subTitle?: string;
 }
 
-const { blogPost } = Astro.props;
+const { link, title } = Astro.props;
 ---
 
 <section class="blog-post">
-  <h2>{blogPost.data.title}</h2><time
-    datetime={blogPost.data.date.toISOString()}
-  >
-    {
-      new Intl.DateTimeFormat("en-us", {
-        dateStyle: "long",
-      }).format(blogPost.data.date)
-    }
-  </time>
-  <p class="highlighted-card-section">{blogPost.data.description}</p>
-  <a href={`/blog/${blogPost.slug}`}></a>
+  <h2>{title}</h2>
+  <slot name="sub-title" />
+  <div class="highlighted-card-section">
+    <slot />
+  </div>
+  <a href={link}></a>
 </section>
 
 <style>
@@ -81,4 +76,3 @@ const { blogPost } = Astro.props;
       calc(-1 * var(--blog-post-padding)) calc(-1 * var(--blog-post-padding));
   }
 </style>
-

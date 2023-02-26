@@ -1,0 +1,190 @@
+---
+export interface Props {
+  avatarSize?: "large" | "medium" | "small";
+}
+
+const { avatarSize = "medium" } = Astro.props;
+---
+
+<div class="top-sentinel"></div>
+<header class="sticky-header">
+  <a href="/"
+    ><div class="avatar-container no-animate-on-render hexagon-clip">
+      <img
+        height="200px"
+        width="200px"
+        class={`hexagon-clip avatar img-${avatarSize}`}
+        src="/me-business-pic_compressed-cropped.png"
+      />
+    </div></a
+  >
+  <a class="link-no-style" href="/"
+    ><h2 class="name text-opposite-gradient"><span>Jigs'</span> Blog</h2></a
+  >
+  <nav class="sticky-nav">
+    <a href="/blog"><button class="text-opposite-gradient">Posts</button></a>
+  </nav>
+</header>
+<script>
+  import { observeTop } from "./StickyHeader.js";
+
+  observeTop(".top-sentinel");
+
+  setTimeout(
+    () =>
+      document
+        .querySelector(".no-animate-on-render")
+        ?.classList.remove("no-animate-on-render"),
+    300
+  );
+</script>
+<style>
+  .sticky-header {
+    z-index: 1000;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    --sticky-padding: 1.7em;
+    padding: 0.7em var(--sticky-padding);
+    background-color: rgba(var(--accent-bg), 0.6);
+    border-bottom: 1em solid rgba(var(--current-bg), 0.6);
+  }
+  .sticky-header.is-sticky {
+    background-color: rgba(var(--current-bg), 0.7);
+    backdrop-filter: blur(25px);
+  }
+
+  .name {
+    visibility: hidden;
+  }
+
+  .sticky-header.is-sticky .name {
+    visibility: visible;
+  }
+
+  .sticky-header .avatar-container {
+    --img-size-temp: 50px;
+    width: 50px;
+    transform: translateX(
+        calc(50vw - var(--img-size-temp) / 2 - var(--sticky-padding))
+      )
+      translateY(calc(var(--img-size) / -2)) scale(calc(var(--uimg-size) / 60));
+    transition: all 0.3s cubic-bezier(0.39, 0.575, 0.565, 1);
+  }
+
+  @media (max-width: 500px) {
+    .img-large {
+      width: 300px;
+    }
+    .sticky-header .avatar-container:has(.img-large) {
+      width: 30px;
+      transform: translateX(
+          calc(50vw - var(--img-size) / 2 - var(--sticky-padding))
+        )
+        scale(calc(var(--uimg-size) / 60))
+        translateY(calc(var(--img-size) / -2));
+      transition: all 0.3s cubic-bezier(0.39, 0.575, 0.565, 1);
+    }
+  }
+
+  @media (max-width: 350px) {
+    .img-large {
+      width: 250px;
+    }
+    .sticky-header .avatar-container:has(.img-large) {
+      width: 25px;
+      transform: translateX(
+          calc(50vw - var(--img-size) / 2 - var(--sticky-padding))
+        )
+        scale(calc(var(--uimg-size) / 60))
+        translateY(calc(var(--img-size) / -2));
+      transition: all 0.3s cubic-bezier(0.39, 0.575, 0.565, 1);
+    }
+  }
+  .no-animate-on-render.no-animate-on-render {
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+
+  .sticky-header img {
+    width: 50px;
+    height: auto;
+  }
+
+  a.link-no-style {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .sticky-header.is-sticky .avatar-container {
+    transform: translateY(0) translateX(0) scale(1);
+    width: 50px;
+  }
+
+  .sticky-header.is-sticky .avatar-container::before {
+    background: var(--accent-gradient);
+    background-size: 400%;
+    background-position: 0%;
+  }
+
+  .avatar-container::before {
+    position: absolute;
+    content: "";
+    z-index: 3;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    /* height: 110cqh;
+    width: 110%; */
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.8);
+    --hexagon-slant: 25%;
+    -webkit-clip-path: polygon(
+      50% 0%,
+      100% var(--hexagon-slant),
+      100% calc(100% - var(--hexagon-slant)),
+      50% 100%,
+      0 calc(100% - var(--hexagon-slant)),
+      0 var(--hexagon-slant)
+    );
+    clip-path: polygon(
+      50% 0%,
+      100% var(--hexagon-slant),
+      100% calc(100% - var(--hexagon-slant)),
+      50% 100%,
+      0 calc(100% - var(--hexagon-slant)),
+      0 var(--hexagon-slant)
+    );
+  }
+  .avatar-container::before {
+    position: absolute;
+    content: "";
+    z-index: 1;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    /* height: 110cqh;
+    width: 110%; */
+    background-color: rgba(var(--current-bg), 0.7);
+    --hexagon-slant: 25%;
+    clip-path: polygon(
+      50% 0%,
+      100% var(--hexagon-slant),
+      100% calc(100% - var(--hexagon-slant)),
+      50% 100%,
+      0 calc(100% - var(--hexagon-slant)),
+      0 var(--hexagon-slant)
+    );
+  }
+
+  .top-sentinel {
+    position: absolute;
+    top: 0;
+    height: 10px;
+  }
+</style>

@@ -1,0 +1,218 @@
+---
+title: Applications of the Multiplicative and Additive Principle of Combinatorics in Programming.
+date: 2020-02-07T03:43:23.030Z
+published: false
+description: >
+  I'm going to give a run through of two basic (though possibly not simple) combinatorics principles and their applications to programming. You probably have seen these principles before if you have taken a college algebra class. So, first I'll answer what is combinatorics:
+
+  Combinatorics is a branch of Mathematics that teaches you how
+  to count the total number of "things" in some given situation usually these "things" are elements and they make up what is called a set, but we'll get to know more about that in a bit.
+
+  It comes in handy in fields such as computer science and areas like probability.
+  For example I could tell you that the number
+  of different permutations of a deck of face-cards (think of this as all
+  the different ways the deck could be shuffled) is $52!$ which can be written out as: $52 \cdot 51 \cdot 50 \cdot \ldots \cdot 1$;
+tags:
+  - combinatorics
+  - multiplicative-principle
+  - additive-principle
+  - programming
+  - number-systems
+  - logic
+  - set-theory
+---
+
+I'm going to give a run through of two basic (though possibly not simple) combinatorics principles and their applications to programming. You may possibly know these principles before if you have taken a college algebra class, but this post might show you some new tricks.
+I'm assuming you don't already know either the multiplicative or additive principle of combinatorics and/or their relation to programming. This blog post will end by showing you how to count the number
+of different possible combinations of shuffles a deck of cards could be in.
+
+So, first I'll answer what is combinatorics:
+
+Combinatorics is a branch of Mathematics that teaches you how
+to count the total number of "things" in some given situation usually these "things" are elements and they make up what is called a set, but we'll get to know more about that in a bit.
+
+It comes in handy in fields such as computer science and areas like probability.
+For example I could tell you that the number
+of different permutations of a deck of face-cards (think of this as all
+the different ways the deck could be shuffled) assuming it has 52 cards is $52!$ which can be written out as: $52 \cdot 51 \cdot 50 \cdot \ldots \cdot 1$; The triple dots (a.k.a. ellipsis) there just mean repeat the pattern until
+you hit the next part. That number is roughly $10^{67}$ which to give you an idea of how large that is there are roughly
+$10^{80}$ atoms in the observable universe. So, that's honestly a small fraction of $\left(\frac{1}{10^{13}}\right)$ the size of the
+number of atoms in the observable universe, but it's still quite massive and alot bigger than most numbers you would run into any given day. So, to me atleast
+it is suprising that something so common place holds so much hidden possibility and complexity. This large number coming from
+practically nothing is what some refer to as a combinatorial explosion.
+
+So, why as a programmer should you care about combinatorics? Well the answer is that sometimes it's useful to count
+how long a program will run in terms of it's input or how much memory it uses while it runs we usually refer to this in terms of Big $O$ notation (pronounced "Big Oh"). If an
+algorithm runs in $O(n!)$ (pronounced "Big oh of n factorial") then for even seemingly small input sizes of $n$ it could take something like the age of the universe to compute (think a bit larger sizes of $n$ then our example of 52 playing cards).
+So, if you know just a small bit of combinatorics mainly divided up into the multiplicative and additive principles of combinatorics it will help you
+know whether your program is computable in a reasonable time.
+
+## Basics of Sets
+
+Sets are a useful tool for counting, (actually they are even more general than that they help create Set Theory which can be used to describe almost all of modern Mathematics.)
+Sets have certain properties that make them useful without any one of the properties that
+make them sets then they become something else like an ordered tuple (where ordering and duplicates matter), multiset (where duplicates matter), etc.
+Here are some important properties of a set:
+
+- Sets have elements
+- Sets have a size determined by the number of elements
+- Sets are equivalent if and only if (the "if and only if" just means the if statement goes both ways)
+  all members of set $A$ are in set $B$ and all members of set $B$ are in set $A$.
+  - This means ordering of elements doesn't affect the size nor determine equality between two sets
+
+As in example the set $P$ is given below in set notation with elements $1,2,3$ and size $3$:
+
+$$
+P = \{1,2,3\}
+$$
+
+Sets in set notation are distuingished by their curly braces (a.k.a squiggly brackets) with each element seperated by a comma. The set above
+is declared as equivalent to the variable $P$ which we can then call the set $P$. Sets have a certain feature/property that each element is only counted towards its size if it is unique/distuingishable in its labeling.
+Also ordering doesn't matter so, the following things are all equivalent:
+
+$$
+P = \{1,2,3\} = \{3,2,1\} = \{1,1,1,1,1,2,3\} = \{2,2,1,1,1,3,3,3\}
+$$
+
+So, the most common form you might see of the above is the simplest and orderly one is $\{1,2,3\}$ though ordering really isn't that important other
+than for illustrative purposes. As an example of sets that aren't equivalent none of the following are equivalent to each other:
+
+$$
+\{1,2,3\} \neq \{2,2,3\} \neq \{2\} \neq \{2,3,4\}
+$$
+
+The nice thing about sets having only unique values is it lets you decide if you want to label the thing your are representing differently and thus count it differently.
+Say for example you have 3 apples and 3 oranges, you might count all 6 of them as individually labeled fruits $\{a1,a2,a3,o1,o2,o3\}$
+or you might only care about the 2 types of fruits $\{a,o\}$.
+
+Sets can also be expressed using [Set Builder notation](<https://en.wikipedia.org/wiki/Set_(mathematics)#Set-builder_notation>) which though useful I won't go into here,
+but also sets can be denoted/expressed using natural language such as:
+
+- The set of all positive even numbers
+  - (In set notation you might write this as: $\{2,4,6,\ldots\}$)
+- The set of three distinctly labeled apples and two distinctly labeled oranges
+  - And we just basically created a multiset using a set. Aren't sets useful 👍.
+- The set of all apples and all oranges
+- The set of all grilled cheese sandwiches that can be made from 3 cheeses and 2 breads (assuming same breads top and bottom, and bread then cheese then bread configuration)
+  - (We'll go into this one a bit more below and how to count it!)
+
+As you can see sets can be defined by natural language, but just because they can be explained simply that may not mean they are easy to count.
+
+## Multiplicative principle:
+
+So, how do we know that $52!$ is the number of permutations of a deck of cards. Well we can use something
+called the multiplicative principle of combinatorics (multiplicative gets its name from multiplication).
+Here's a quick definition of this rule:
+
+> If there are $a$ ways of doing something and $b$ ways of doing another thing, then there are $a \cdot b$ ways of performing both actions. - [Wikipedia (Rule of Product)](https://en.wikipedia.org/wiki/Rule_of_product)
+
+So, wikipedia is saying if we somehow combine $a$ things with $b$ things together and they create a seperate outcome of a thing $c$ then there are $a \cdot b=c$ possible things that can be our outcome.
+So, remember our things here can be modeled as elements of sets, so to restate more formally if we have $a$ elements of a set and $b$ elements of another if we combine a and b together into a set of set pairs (where we define set pairs as sets with two elements) we will have a set of with $a \cdot b = c$ elements. How can we build an intuitive understanding of this? Below I'll try and show a spatial example which just relates the above equation to the area
+of a rectangle.
+
+## Grilled Cheese Sandwiches and Area
+
+Question: You want to make a grilled cheese sandwich and there are two types of breads and three types of cheese.
+How many possible sandwiches can you make if with each sandwich you can only use one of the types of bread
+and one of the types of cheese.
+
+Explanation: Well, the key words "how many" might rightfully signify to you that this is a combinatorics
+problem. Also, note that most mathematics questions the details of the question have to be taken in to account for example
+if we took out the part of only use one type of the types bread per sandwich and instead allowed for two (or possible even more) types of bread per sandwich
+then we would have ended up with a different answer. If you noticed, we can apply the definition of the multiplicative principle to our grilled cheese sandwiches we can have $2$ ways
+of having bread and $3$ ways of having cheese so long as those two can be combined we have $3 \cdot 2=6$ ways of having them together.
+Since this is a smaller problem it is possible to approach by listing/enumerating every possibility.
+Say we have white and wheat bread, and provolone, cheddar, and american cheese we could write it out as these possibilities:
+
+Possible sandwiches:
+
+- white & provolone
+- white & cheddar
+- white & american
+- wheat & provolone
+- wheat & cheddar
+- wheat & american
+
+Now the only problem with writing out all possible solutions for every problem is that it would take us too long, so being the amateur and budding
+mathematicians we are we can hopefully learn the power of correctly generalizing from first principles and applying those to larger problems. So, one thing to know about combinatorics is if we can create a one-to-one correspondence between two sets of elements then
+we know they have the same size (more about [one-to-one correspondences a.k.a bijections here](https://en.wikipedia.org/wiki/Bijection)). So, lets look at one
+different way we can state the size of the above configuration of grilled cheeses:
+
+- (Geometrically) If you represent each grilled cheese as a 2D unit square (1x1). Each square along the x axis represents a sandwich with different bread with the same cheese and
+  each square along the x axis represents a sandwich with the same bread and different cheese.
+
+The geometric form might look like this:
+
+import "./style.css";
+import { TwoDSandwiches } from "./sample";
+
+<TwoDSandwiches />
+
+The simplified version of this code (where it just prints a string instead of elements) might look something like this:
+
+```js codesandbox=vanilla
+const breads = ["White 🍞", "Wheat 🍞"];
+const cheeses = ["Provolone 🧀", "Cheddar 🧀", "American 🧀"];
+let k = 0;
+for (const cheese of cheeses) {
+  const row = [];
+  for (const bread of breads) {
+    row.push(`${cheese} & ${bread} = 🥪 #${k}`);
+    k += 1;
+  }
+  console.log(row.join("\t\t"));
+  console.log("\n");
+}
+
+console.log(k + " total grilled-cheeses");
+```
+
+So, now we can hopefully intuitively see there are $3 \cdot 2=6$ possible combinations by noticing that each
+cell of the above table counts as one valid sandwich and that the table is made up of three columns (the same number as our cheeses) and two columns (the same number as our breads).
+Since we can count the number of cells to get the total number of sandwiches we can now compute the number of cells by $\text{rows} \cdot \text{columns} = \text{cells}$. We can generalize this visualization
+to any nonnegative number $m$ of bread choices and $n$ of cheese choices for $m \cdot n$ possible grilled cheese sandwiches (given the above conditions of course).
+
+## Counting number of possible lock combinations
+
+Q: Say you are given a combination lock with the numbers 0-9 on each of four dials. Each dial can move independently of the
+others. How many different combinations can the lock be in?
+
+A: Well this is still using the multiplicative principle of combinatorics. There are 10 possible ways each dial can be in. 1-9 make up 9 of those ways where as 0 adds one extra way.
+Therefore since there are four dials and ten ways for each dial there are $10*10*10*10=10^4=10000$ ways the combination lock can be in.
+
+Well why did I add this and why is it interesting? Well one can say the previous answer will become obvious if you look at it a different way that is that you can count the number
+of combinations by simply starting from all 0s and thinking of that as a number and then incrementing by one each time (starting by incrementing the right most number). In other words it's like we are counting from 0 to 9999 which again is 10,000 different possibilites.
+I chose 0-9, because we work with decimal (base 10) systems so often that it's obvious once you get to 9 on the rightmost digit and add one you carry over the one and get 10 in the right two digits. Why would I explain the previous using the multiplicative principle if it's
+obvious, because it lets us know what would happen if we suddenly have a different problem and the multiplicative principle will help us find that for example this problem:
+
+Q: Say you are given a similar combination lock as the above question where there are 4 different dials except now there are only the digits 0 and 1 on each dial.
+How many different combinations can the lock be in?
+
+A: The answer follows from the fact that there are two different ways a dial can be in and four different dials so we get $2*2*2*2=2^4=16$ combinations of the previous lock.
+
+We could use the same way of counting this previous one just in binary and convert it to decimal to get the answer. Which I might cover counting in binary in a different post (but that might be a bit tangential for this post.)
+
+## First Ordering Example
+
+The below question will take into account orderings which to help you, you might want to try and pick an arbitrary number first and decide how many choices
+you had when you picked that number and then make other choices until you are out of choices. Picking something arbitrarily just means your choice doesn't really matter the fact that you made the choice of course does and the result and choices that follow will follow from that choice.
+There's usually some form of symmetry that can be applied to the problem where picking a different choice doesn't make a difference in the final result. For example which number you choose to put in the line/ordering first doesn't matter but you can use it as an example to know what could be a possible choice next.
+Note it didn't matter which choice you made first but you can then multiply each number of subsequent choices by the number of previous
+ones, because for each of the previous choices you can make the next choice. Don't feel bad if you don't get this one and have to read the answer, because
+I haven't really prepped you enough to help you figure it out without some amount of previous knowledge.
+
+Q: How many possible orderings are there of the numbers 1,2,3 if each number must be used once and only once?
+
+A: Well we start by making our first choice in the order we have 3 choices from the number 1, 2, and 3. Once we've chosen our first number (e.g. say it's 3) we then have two possible choices left over which are the ones
+we didn't choose yet (e.g. because of our previous example choice we would have 1 and 2 as possible choices, say we choose 2), and then finally we have only 1 choice for choosing the last one (e.g. we choose 1).
+
+Therefore there are $3\cdot2\cdot1=3! = 6$ possible orderings.
+
+## Orderings of Playing Cards
+
+Q: If you have 52 playing cards how many possible orderings are there?
+
+A: The answer follows the same logic as the previous. At first you have 52 choices then after that choice you have 51 then 50, 49, 48 all the way down to 1.
+So, you have $52 \cdot 51 \cdot 50 \cdot \ldots \cdot 1 = 52!$
+
+The general form of the equation that tells the number of ordering $n$ things in a line where each one can only be used exactly once is $n!$.

@@ -1,0 +1,7 @@
+---
+import Code, { Props as CodeProps } from "astro/components/Code.astro";
+export interface Props extends CodeProps {}
+const { code, wrap } = Astro.props;
+---
+
+<Code code={code} wrap={wrap ?? null} />

@@ -1,0 +1,72 @@
+---
+title: Locks and Counting
+date: 2020-01-03T00:29:08.516Z
+partOfSeries: counting
+description: >
+    We'll start counting a few different combinations of locks in this post, but we'll
+    only cover counting in different bases to help provide an example of the next chapter
+    The Multiplicative Principle of Combinatorics:
+published: false
+tags:
+    - math
+    - Combinatorics
+    - algebra
+---
+
+We'll start counting a few different combinations of locks in this post, but we'll
+only cover counting in different bases to help provide an example of the next chapter
+The Multiplicative Principle of Combinatorics:
+
+Say you have a combo lock with 4 dials each going from 0-9 how many different possible
+combinations can you make?
+
+Hint: 
+>! Try to think about the highest possible number you can represent and the lowest
+possible number you can represent. Also, try not to make an off by one error
+
+Answer:
+>! The answer is 10,000. The reason for this is you start at 0000 and by 
+incrementing one at a time you can reach up to 9999, and since we counted
+0000 **first** we have 10,000 as our answer.
+
+Well, this answer can be interesting to us for a few reasons. We can now answer questions like if I can
+do 1 attempt at a combination per 1/2 second how long will it take me to open the lock? Also we may just
+really like to count and count wait to glean insights and learn from this example (maybe I'm alone there haha).
+
+Say instead we have a combo lock that has three digits long and each digit only has the numbers 0 to 1.
+Well, to list out all the possible combinations we can't just count like we normally do (unless you know
+how to count in binary.) But, we need to find each combination by either trial and error or some better way.
+
+Try making a table of each possible combination.
+
+Here's what I get:
+
+|1st digit|2nd digit|3rd digit|
+|---------|---------|---------|
+|0|0|0|
+|0|0|1|
+|0|1|0|
+|0|1|1|
+|1|0|0|
+|1|0|1|
+|1|1|0|
+|1|1|1|
+
+The answer is there are 8 same as the number of rows. This could be what some might call a proof
+by exhaustion (exhausting all possibilities of a combinatorial landscape.)
+
+In the above I approached the problem with an algorithm (series of steps) that would get me
+from one lock position to every other lock position. You might notice that this is just the regular
+counting algorithm just applied with a different twist, since it has only the digits 0-1 instead of
+0-9.
+
+Notice we only change the rightmost
+digit every time whereas the second-right-most one changes only every time the right most one carries
+(sort of like it "flows over" as if it doesn't have room to hold the content of anything higher than the two digits 0 and 1),
+and this pattern continues for the third column where it only changes when the second one carries. 
+Notice that this algorithm is strangely similar to counting we start with a 0 in the
+rightmost column count up to the max number then we carry the next number after that.
+
+How do we know 
+
+

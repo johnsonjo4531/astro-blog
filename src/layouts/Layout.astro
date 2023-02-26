@@ -1,6 +1,6 @@
 ---
 export interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
@@ -8,28 +8,270 @@ const { title } = Astro.props;
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 <style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
+  :root {
+    --current-color: black;
+    --warning-color: tomato;
+    --dark-bg: 0, 0, 0;
+    --accent-bg: 200, 200, 200;
+    --info-color: slategrey;
+    --lightest-bg: 255, 255, 255;
+    --current-bg: var(--lightest-bg);
+    --opposite-bg: var(--dark-bg);
+    --accent: 70, 130, 180;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      hsla(120, calc(60% * 0.5), calc(100% * 0.5), 0.8) 30%,
+      rgb(var(--current-bg)) 60%
+    );
+    --reverse-accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--current-bg)),
+      hsla(120, calc(60% * 0.5), calc(100% * 0.5), 0.8) 30%,
+      rgb(var(--accent)) 60%
+    );
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --current-bg: var(--dark-bg);
+      --opposite-bg: var(--lightest-bg);
+    }
+  }
+  .hidden {
+    visibility: hidden;
+  }
+  html {
+    font-family: system-ui, sans-serif;
+    background-color: rgba(var(--current-bg), 0.3);
+    backdrop-filter: blur(30px);
+  }
+  a {
+    color: rgba(var(--accent), 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --current-color: white;
+      color: white;
+    }
+    a {
+      color: white;
+    }
+  }
+  body {
+    margin: 0;
+  }
+  .img-large {
+    --uimg-size: 500;
+    --img-size: min(500px, calc(100vw - var(--hex-padding, 0px) * 2));
+    width: 500px;
+    height: 500px;
+    max-width: 500px;
+    max-width: var(--img-size);
+  }
+  .img-medium {
+    --uimg-size: 250;
+    --img-size: min(250px, calc(100vw - var(--hex-padding, 0px) * 2));
+    width: 250px;
+    height: 250px;
+    max-width: 250px;
+    max-width: var(--img-size);
+  }
+  code {
+    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
+      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  }
+  .hexagon-clip {
+    --hexagon-slant: 25%;
+    -webkit-clip-path: polygon(
+      50% 0%,
+      100% var(--hexagon-slant),
+      100% calc(100% - var(--hexagon-slant)),
+      50% 100%,
+      0 calc(100% - var(--hexagon-slant)),
+      0 var(--hexagon-slant)
+    );
+    clip-path: polygon(
+      50% 0%,
+      100% var(--hexagon-slant),
+      100% calc(100% - var(--hexagon-slant)),
+      50% 100%,
+      0 calc(100% - var(--hexagon-slant)),
+      0 var(--hexagon-slant)
+    );
+  }
+  .text-center {
+    text-align: center;
+  }
+  .glass-overlay {
+    position: relative;
+  }
+  .glass-overlay:before {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 300px;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    background-color: rgba(var(--current-bg), 0.6);
+  }
+  .glass-overlay:after {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    top: calc(100% - 300px);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    -webkit-backdrop-filter: blur(80px);
+    backdrop-filter: blur(80px);
+    background-color: rgba(var(--accent-bg), 0.6);
+  }
+  p {
+    font-size: 1.5rem;
+  }
+
+  .container {
+    margin: auto;
+    padding: 1.5rem;
+    max-width: min(100vw, 800px);
+  }
+  h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+  }
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+  .text-gradient {
+    background-image: var(--reverse-accent-gradient);
+    /* radial-gradient(circle at center, rgba(var(--accent-bg), 0.3), white); */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 100%;
+    background-position: 0%;
+  }
+  .text-opposite-gradient {
+    background-image: var(--reverse-accent-gradient);
+    /* radial-gradient(circle at center, rgba(var(--accent-bg), 0.3), white); */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: rgba(var(--opposite-bg), 0.3);
+    background-size: 100%;
+    background-position: 0%;
+  }
+  main {
+    padding-top: 6em;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    background-color: rgba(var(--current-bg), 0.7);
+  }
+  .avatar {
+    position: relative;
+    z-index: 2;
+  }
+  .avatar-container {
+    position: relative;
+    padding: 6px;
+    z-index: 2;
+  }
+  .avatar-container:has(.img-large) {
+    --uimg-size: 500;
+    --img-size: min(500px, 90vw);
+  }
+  .avatar-container:has(.img-medium) {
+    --uimg-size: 250;
+    --img-size: min(250px, 90vw);
+  }
+  aside {
+    position: relative;
+    padding: 0.7em;
+    padding-left: 1.7em;
+    font-size: 1.15em;
+    border-radius: 12px;
+    background-color: rgba(var(--accent-bg), 0.2);
+    backdrop-filter: blur(4px);
+    margin: 1.7em 0;
+  }
+  aside::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1.2em;
+    border-radius: 12px 0 0 12px;
+    background-color: var(--info-color);
+  }
+
+  .aside-warning::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1.2em;
+    border-radius: 12px 0 0 12px;
+    background-color: var(--warning-color);
+  }
+  button {
+    cursor: pointer;
+
+    font-size: 1em;
+    background-color: rgba(var(--current-bg), 0.3);
+    color: rgba(var(--opposite-bg));
+    backdrop-filter: blur(5px);
+    padding: 7px 30px;
+    border-radius: 6px;
+    border: 6px solid rgba(var(--current-bg), 0.1);
+  }
+  .astro-code {
+    backdrop-filter: blur(4px);
+    border-radius: 12px;
+    border: 4px solid rgba(var(--accent), 0.3);
+    padding: 1.7em;
+  }
+  code:not(pre code) {
+    background-color: rgba(var(--accent-bg), 0.3);
+    backdrop-filter: blur(4px);
+    padding: 0.5em;
+    border-radius: 12px;
+    vertical-align: middle;
+    font-size: 0.5em;
+  }
+  .preferred-bg::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    content: "";
+    background: rgba(var(--current-bg), 0.4);
+  }
+  .preferred-bg {
+    position: relative;
+    z-index: 1;
+    background: rgba(var(--accent), 0.3);
+    backdrop-filter: blur(8px);
+  }
 </style>

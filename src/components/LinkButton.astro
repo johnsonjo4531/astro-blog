@@ -1,0 +1,25 @@
+---
+export interface Props {
+  to: string;
+}
+
+const { to } = Astro.props;
+---
+
+<button>
+  <slot />
+  <a href={to}></a>
+</button>
+
+<style>
+  button {
+    position: relative;
+  }
+  button > a {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/StickyHeader.astro";
+import Doodle from "../components/main-doodle.astro";
+export interface Props {
+  avatarSize?: "small" | "large" | "medium";
+  title?: string;
+}
+
+const { avatarSize = "medium", title = "Howdy!!" } = Astro.props;
+---
+
+<Layout title={title}>
+  <Doodle />
+  <div class="glass-overlay">
+    <div class="container">
+      <h1 class="text-center text-gradient">Jigs' Blog</h1>
+      <h2 class="text-center">My name is John Johnson.</h2>
+      <h3 class="text-center">But my friends call me Jigs!</h3>
+      <img
+        class="hidden avatar img-medium"
+        src="/me-business-pic_compressed-cropped.png"
+      />
+    </div>
+  </div>
+  <Header avatarSize={avatarSize} />
+
+  <main class="preferred-bg">
+    <slot />
+  </main>
+</Layout>
+
+<style>
+  .glass-overlay:before {
+    bottom: 100px;
+  }
+  .glass-overlay:after {
+    top: calc(100% - 100px);
+  }
+  main {
+    min-height: 37vh;
+  }
+</style>

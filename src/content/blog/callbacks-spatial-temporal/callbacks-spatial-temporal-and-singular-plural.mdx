@@ -1,0 +1,188 @@
+---
+title: Callbacks as handling both Spatial and Temporal as well as Singular and Plural spaces
+date: 2020-12-11T06:18:31.594Z
+description: >
+  Kris Kowal gives an excellent explanation analogy of Spatial and Temporal
+  data types as well as singular and plural data types in his excellent General Theory of Reactivity (GTOR).
+  This is an explanation of why callbacks can allow you to handle all of those different axes of
+  space and multiplicity. Although I find myself more often than not constraining myself to the tool that
+  fits best for the job which makes Kris Kowal's explanation so beneficial, and which makes me enjoy
+  coding with constraints on these axes. But, in this post I'll take you through how you could code each of
+  these axes using callbacks.
+published: false
+tags:
+  - promises
+  - callbacks
+  - javascript
+---
+
+Kris Kowal gives an excellent explanation and analogy of spatial and temporal
+data types as well as singular and plural data types in his excellent General Theory of Reactivity (GTOR).
+This is an explanation of why callbacks can allow you to handle all of those different axes of
+space and multiplicity. Although I find myself more often than not constraining myself to the tool that
+fits best for the job which makes Kris Kowal's explanation so beneficial, and which makes me enjoy
+coding with constraints on these axes. But, in this post I'll take you through how you could handle each of
+these axes using callbacks.
+
+
+As an example of a data-type in $\{Singular,Plural\}\times\{Spatial,Temporal\}$ space a promise in his definition gives singular values in and some temporal space this is as opposed to plural and spacial space respectively. He defines the temporal space as something that comes at some variable point in time as opposed to spacial space which is already
+assumed to be in the current point of time, but in some variable location in memory.
+
+He makes a little table for different types of values:
+
+|          | Singular         |	Plural             |
+|----------|------------------|--------------------|
+| Spatial  | `Value`          | `Iterable<Value>`   |
+| Temporal | `Promise<Value>` |	`Observable<Value>`  |
+
+For Plural/Temporal we usually use AsyncIterables or Streams in JS. Observables are still not quite a part of JS yet and might not be ever... 
+Well, a callback can actually work with all of those different axes of Space/Temporal and Singular/Plural.
+Which we'll be shown by example in the rest of this post.
+
+
+## Singular/Spatial. (Though this is a bit contrived it illustrates the point. Also, by my experience, this is the least common use you'll see for a callback.)
+
+It's Singular, because it is only called once. It's also spatial, because the data that is sent into the callback (which is technically nothing/undefined)
+is already there when the function is called (that would make it vacuosly spacial, but I couldn't think of a more fitting example off the top of my head haha).
+
+```js codesandbox=vanilla
+/* This function asserts */
+function assertCBThrows (cb, message) {
+  let thrown = false;
+  try {
+    cb();
+  } catch (err) {
+    thrown = true
+  }
+  if(thrown) {
+    console.info("Assertion Properly threw:", message);
+  } else {
+    console.error("AssertionError:", message, "Assertion should have thrown.");
+  }
+}
+
+assertCBThrows(() => {
+  throw new Error("oops")
+}, "Callback should throw");
+assertCBThrows(() => 2 + 2, "2 + 2 is an error")
+```
+
+## Plural/Spatial.
+
+This is a pretty common use case for Array.prototype methods such as good old
+`.map`, `.filter`, `.find`, `.forEach`, `.some`, `.any`, etc...
+
+Notice this map's callback is called for each element in the array (Plural),
+and also called on only elements currently in memory (Spatial)
+
+```js codesandbox=vanilla
+// This is not production ready code and is for illustrative purposes
+function map (arr, cb) {
+    const mappedItems = [];
+    for(const item of arr) {
+        mappedItems.push(cb(item));
+    }
+    return mappedItems;
+}
+
+console.log(map([1,2,3], number => number + 2));
+```
+
+## Singular/Temporal
+
+This is a pretty common one too you'll see this used for things
+like callbacks that go in promises, setTimeouts, XHR, etc.
+
+The data-type version of the singular temporal is called a promise the advantage of it
+over callbacks is that with Promises you can pass them around and get the value whenever you
+want. You can return the value from somewhere just eventually you have to pass in a callback
+or await it to extract the value. There's also many utilities built into JS which make working
+with promises much simpler in this use case.
+
+Notice this calls setTimeout (Temporal)
+and is also only ever called one time (Singular)
+
+```js codesandbox=vanilla
+// Version 3.0. Better than the last two non-existent versions!
+function sleep3000 (cb) {
+    setTimeout(() => {
+        cb("Welcome to the future 😎!")
+    }, 3000);
+}
+
+sleep3000(message => {
+    console.log(message);
+})
+```
+
+## Plural/Temporal
+
+This one is where things get really interesting and where callbacks
+are still frequently used in things such as Event Emitters, route handlers
+in things like Express JS, Graphql Resolvers, Streams, etc...
+
+The data type version for callbacks in this situation is generally to setup a stream or async iterable.
+The advantage to those two things is that they can be passed around as first class objects in the language
+and manipulated according to your liking.
+
+(I have no idea why I over-complicated this last example, but anyways the main function is `on` the rest is just utility stuff)
+
+```js codesandbox=vanilla
+document.body.style.margin = 0
+function on (els, event, cb) {
+    for(const el of els) {
+        el.addEventListener(event, cb);
+    }
+}
+function text (string) {
+    return document.createTextNode(string);
+}
+function el (element, props, ...children) {
+    const el = document.createElement(element);
+    Object.assign(el, props);
+    Object.assign(el.style, props.style);
+    for(const child of children) {
+        el.appendChild(child);
+    }
+    return el;
+}
+
+const centerStyles  = {
+    'align-items': "center", 
+    "display": "flex", 
+    "justify-content": "center", 
+    "font-color": "#ccc"
+};
+document.body.appendChild(el('div', {id: 'foo', style: {height: '33vh', ...centerStyles }}, text("Hover me")))
+document.body.appendChild(el('div', {id: 'bar', style: {height: '33vh', ...centerStyles }}, text("Hover me")))
+document.body.appendChild(el('div', {id: 'baz', style: {height: '33vh', ...centerStyles }}, text("Hover me")))
+
+// Adapted/ported from the wiki page on linear interpolation: https://en.wikipedia.org/wiki/Linear_interpolation
+function lerp(v0, v1, t) {
+  return (1 - t) * v0 + t * v1;
+}
+
+const color = [];
+on([document.getElementById('foo'), document.getElementById('bar'), document.getElementById('baz')], 'mousemove', (e) => {
+    const element = e.currentTarget;
+    const {x, width, y, height} = element.getBoundingClientRect();
+    const pulseTimeMS = 1000 * 60 // complete lightnesss pulse every minute
+    const lightness = lerp(0,100,(Date.now() % (pulseTimeMS)) / pulseTimeMS).toFixed(2);
+    const colors = `hsl(${lerp(0,360, (e.clientX - x) / width).toFixed(2)}, ${lerp(0,100, (e.clientY - y) / height).toFixed(2)}%, ${lightness}%)`;
+    element.style['background-color'] = colors;
+    element.innerHTML = "";
+    element.appendChild(el('div', {
+        style: {
+            ...centerStyles,
+            "color": `hsl(0, 0%, ${(100 - lightness)}%)`
+        }
+    },
+    text(colors)))
+})
+```
+
+
+
+
+
+

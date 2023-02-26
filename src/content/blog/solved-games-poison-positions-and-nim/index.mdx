@@ -1,0 +1,223 @@
+---
+title: Solved games, Poison Positions, and the Game of Nim
+date: 2021-01-04T06:18:08.819Z
+description: >
+  I remember learning all these three concepts back in my High School Computer Science class, but
+  over time I have come to see a bit more about them.
+
+  A solved game is one in which the outcome is known from the beggining win, lose, or draw as long as the players are playing optimally.
+
+  Say we have the classic game of Nim although a simplified version of it. Where you have
+  some number of objects and your target is either to take the last item or to not take it, but on the condition...
+published: false
+tags:
+  - Logic
+  - Puzzle
+  - Games
+  - Game Theory
+  - Solved Games
+  - Nim Games
+  - Poison Positions
+---
+
+I remember learning all these three concepts back in my High School Computer Science class, but
+over time I have come to see a bit more about them.
+
+A solved game is one in which the outcome is known from the beggining win, lose, or draw as long as the players are playing optimally.
+
+Say we have the classic game of Nim although a simplified version of it. Where you have
+some number of objects and your target is either to take the last item or to not take it, but on the condition
+that you can only take so many stones per round like 1,2,3, or 4. In this case
+we'll say you lose if you take the last item and that you win if you do not take the last item.
+
+We can visualize our objects as stones (we'll represent with o's and in groups of 5).
+
+For example here's 20 stones. If you're given the option of only taking 1,2,3 or 4 of them each round
+how would you play, is this a solved game,?
+
+Here's an example game
+
+```
+START ooooo ooooo ooooo ooooo o
+P1 ooooo ooooo ooooo ooooo (takes 1 stone)
+P2 ooooo ooooo ooooo o (takes 4 stones)
+P1 ooooo ooooo oo (takes 4 stones)
+P2 ooooo ooooo o (takes 1 stones)
+P1 ooooo ooo (takes 3 stones)
+P2 ooooo o (takes 2 stones)
+P1 oooo (takes 2 stones)
+P2 o (takes 3 stones)
+P1 LOSES!
+```
+
+Now I'm about to give away the solution to this slightly simpler nim variant, but
+a few things to think about if you want to try and answer it yourself. The last thing you need to know
+is in a solved game there is such a thing as a poison position. Basically this means if you start or at any point land 
+at this position then you will be guaranteed to lose no matter what you do so long as your opponent knows the optimal strategy.
+
+Before I get to the answer some questions you can ask yourself when playing a game like this are:
+
+Will this game end if both players keep taking turns?
+
+hint: 
+
+>! A case where it won't: if both players could somehow continue infinitely then it could end in a stalemate.
+
+Will it have a guaranteed winner?
+
+hint:
+
+>! A few cases where there won't be a guarenteed winner: 
+> the game never ends
+> or there is no guaranteed path to victory (the latter is kind of shown with the next question)
+
+What are the poison positions and can they be forced?
+
+Small hint:
+
+>! Think small first. What is the first poison position (the first position you are guaranteed to lose at) 
+> and how can you force someone into it from a non poison position. Given that you were able to force someone into
+> a poison position at some point as soon as you can no longer force someone
+> into a position you may just be at the next poison position.
+
+Larger hint:
+
+>! The first player above started in a poison position can you see how the second player was able to keep them
+> in another poison position everytime.
+
+## Will this game end?
+
+Yes, it will definitely end since both players must take a number greater than 0 and the pot is finite.
+There will eventually be no more stones.
+
+## Will it have a guaranteed winner?
+
+Yes since the game ends and there is one loser it will have a guaranteed winner.
+
+## What are the poison positions and can they be forced?
+
+Start with the first poison position:
+
+
+Exhibit A:
+```
+o
+```
+
+**Exhibit A is a poison position.**
+
+Do you see how if you started there you would lose (remember losing is taking the last stone).
+
+If we start in any of the following positions can we force our opponent to enter the above position?
+
+Exhibit B:
+```
+oo
+ooo
+oooo
+ooooo
+```
+
+**All positions in Exhibit B are non-poison positions.**
+
+The answer is yes, and that means none of the above are poison positions, but what about this next one.
+Can you force your opponent to enter the single stone position from it?
+
+Exhibit C: 
+```
+ooooo o
+```
+
+**Exhibit C is a poison position.**
+
+No, you cannot in fact starting from Exhibit C anywhere you go will end your opponent somewhere in
+Exhibit B which means they can get you to the single stone position in Exhibit A (meaning they'll end up winning). Which means it is decided
+that your opponent can always win and you will always lose if you start in this position.
+
+Now we need to find the next poison position. I'll give you an explanation to find it.
+If our opponent starts their turn at Exhibit C and we have one additional stone
+than at Exhibit C then we just need to take that one stone now we can extend
+that to two, three, or four additional stones. Now think if there are five additional stones
+from Exhibit C can we force them back to Exhibit C. The answer is no. Can they win after you take
+your turn from the position 5 stones away from Exhibit c. The answer there is yes. If you don't
+get why stop and try to convince yourself of why.
+
+Are you starting to see a pattern yet of the poison positions.
+
+Remember these are the first few.
+
+```
+o
+ooooo o
+```
+
+And here are the next poison positions.
+
+```
+ooooo ooooo o
+ooooo ooooo ooooo o
+ooooo ooooo ooooo ooooo o
+ooooo ooooo ooooo ooooo ooooo o
+```
+
+Now do you see the pattern if there is a solo dangling stone not in a group then you'll
+lose. Of course these groups are just grouped however I decided to group them, so there's
+more to it than just that.
+
+Now what if you wanted to know an arbitrarily large poison number like say for example you had the following question.
+
+Which of these is a poison position in the above nim game rules: 64 stones, 65 stones, 66 stones, 67 stones, 68 stones?
+
+One of them is, and the answer can be given by thinking about when an arbitrarily picked number $n$ is a poison position:
+
+Well how can we determine if an arbitrary $n$ would be a poison number/position. I'll give you a hint it has to do with the number $n$ and it's remainder
+once it's divided by 5. 
+
+Hint: (a more clearly worded version of the question using the above hint): 
+
+>! After dividing by 5. What remainder of $n$: 0,1,2,3,4 will leave us with the above poison positions and all others?
+
+<div style={{height: '100vh', justifyContent: 'center', alignItems: 'center'}}>Scroll down for answer</div>
+
+66 stones.
+
+Why? Because 66's remainder when dividing by 5 is 1. Why is the number 5 so special in this game,
+and why is the remainder one significant?
+
+The number 5 is special, because any one combination of moves the first player takes of taking away stones given the ability to take 
+1,2,3,4 can always add up to 5 after player two chooses their stones.
+
+For example:
+
+If player one takes 1 player two can take 4, and $1+4=5$.  
+If player one takes 2 player two can take 3, and $2+3=5$.  
+If player one takes 3 player two can take 2, and $3+2=5$.  
+If player one takes 4 player two can take 1, and $4+1=5$.  
+
+Either player can always **force** the game to be exactly five less stones on the other player's next turn than it was last turn.
+
+Why is remainder 1 special, well 1 is the first poison position number and given that either player can reduce the number by 5 that's
+where the remainder comes in of 5.
+
+Reading up on remainders and modular arithmetic probably even just the wiki page will give you the knowledge to understand that last bit.
+If it doesn't make sense just remember any remainder minus the number it's being divided by will always have the same remainder i.e. the 
+remainder of 16 divided by 5 is 1 and so is 11, 6, and 1 itself (notice those all decremented by 5 and that the divisor was 5).
+
+So, what if we had a different stone picking game where instead of taking 1,2,3,4 stones we could pick it was
+something like 1,2,3 that we could pick.
+
+Well, we would end up using the same method all numbers 1,2,3 can add up to 4 by the end of two turns
+thus we'll see that we need $n$ to have a remainder of 1 when divided by 4 for it to be a poison position.
+
+So, one last example what if we changed it so we again take as we originally did 1,2,3,4 stones, but in order
+to win you want to take the last pebble. How would that change
+what the poison numbers are?
+
+Well, it would make it so the first poison position would be 5 which means that anywhere where you start you turn
+with $n$ having remainder 0 when divided by 5 then you would lose.
+
+Now, that might seem somewhat counter-intuitive for example you might say, but 0 is a winning position for me, but
+that's only if you ended your turn there and not if you started it there.
+
+I hope you enjoyed this somewhat lengthy journey through learning about solved games and poison numbers all through a game
+of nim.

@@ -1,0 +1,131 @@
+---
+import SpinningCube from "./SpinningCube.astro";
+export interface Props {
+  avatarSize?: string;
+}
+
+const { avatarSize = "large" } = Astro.props;
+---
+
+<!-- <div class="fit-content">
+  <div class="avatar-container no-animate-on-render hexagon-clip"> -->
+<div class="avatar-container avatar-spinning-cube no-animate-on-render">
+  <SpinningCube>
+    <img
+      class={`hexagon-clip hidden-opacity avatar img-${avatarSize}`}
+      src="/me-business-pic_compressed-cropped.png"
+    />
+  </SpinningCube>
+</div>
+<!-- </div>
+  <div class="hidden avatar-container hexagon-clip">
+    <img
+      class={`hexagon-clip avatar img-${avatarSize}`}
+      src="/me-business-pic_compressed-cropped.png"
+    />
+  </div>
+</div> -->
+<script>
+  import { observe } from "./Inview";
+  const el = document.querySelector(".avatar-spinning-cube");
+  if (el)
+    observe(el, ([e]) =>
+      e && e.intersectionRatio > 0
+        ? el.classList.toggle("animate", true)
+        : el.classList.toggle("animate", false)
+    );
+</script>
+<style>
+  @keyframes hex-appear {
+    0% {
+      background-color: transparent;
+      backdrop-filter: none;
+    }
+    50% {
+      background-color: transparent;
+      backdrop-filter: none;
+    }
+    100% {
+      background-color: rgba(var(--background-color), 0.8);
+    }
+  }
+  @keyframes appear {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      background-color: rgba(var(--background-color), 0.8);
+    }
+  }
+  .avatar-container .img-large,
+  .avatar-container .img-medium {
+    --opacity: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    opacity: var(--opacity, 0);
+    background-color: white;
+  }
+
+  .animate.avatar-container.animate .img-large,
+  .animate.avatar-container.animate .img-medium {
+    animation: appear var(--animation-duration) 1 linear;
+  }
+  .avatar-container:has(.img-large) {
+    --dim: var(--dim, 500);
+    --hex-padding: 5em;
+  }
+  .avatar-container:has(.img-medium) {
+    --dim: var(--dim, 250);
+    --hex-padding: 5em;
+  }
+  .stage .img-large,
+  .stage .img-medium {
+    --opacity: 0;
+    z-index: 4;
+  }
+  .avatar-spinning-cube img {
+    transform: translateY(calc(var(--translate-y) * -1))
+      rotateX(calc(var(--rotation) * -1));
+  }
+  .fit-content {
+    width: fit-content;
+  }
+
+  @keyframes appear {
+    from {
+      --opacity: 0;
+    }
+    to {
+      --opacity: 1;
+    }
+  }
+  .avatar-container {
+    --animation-duration: 1s;
+    --animation-delay: 0s;
+    --background-color: 255, 255, 255;
+    margin: 0 auto;
+    width: fit-content;
+    padding: var(--hex-padding);
+    backdrop-filter: blur(10px);
+    background-color: rgba(var(--background-color), 0.8);
+    --hexagon-slant: 25%;
+    clip-path: polygon(
+      50% 0%,
+      100% var(--hexagon-slant),
+      100% calc(100% - var(--hexagon-slant)),
+      50% 100%,
+      0 calc(100% - var(--hexagon-slant)),
+      0 var(--hexagon-slant)
+    );
+  }
+
+  .avatar-container.animate {
+    animation: hex-appear var(--animation-duration) 1 linear
+      var(--animation-delay);
+  }
+</style>
