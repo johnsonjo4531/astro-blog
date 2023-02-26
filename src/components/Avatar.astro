@@ -8,28 +8,23 @@ export interface Props {
 const { avatarSize = "large", animateOnce = false } = Astro.props;
 ---
 
-<!-- <div class="fit-content">
-  <div class="avatar-container hexagon-clip"> -->
-<div
-  class={`avatar-container avatar-spinning-cube ${
-    animateOnce ? "animate-once-inview" : "animate-inview"
-  }`}
+<a href="/"
+  ><div>
+    <div
+      class={`avatar-container avatar-spinning-cube ${
+        animateOnce ? "animate-once-inview" : "animate-inview"
+      }`}
+    >
+      <SpinningCube>
+        <img
+          alt="Jigs' avatar"
+          class={`hexagon-clip hidden-opacity avatar img-${avatarSize}`}
+          src="/me-business-pic_compressed-cropped.png"
+        />
+      </SpinningCube>
+    </div>
+  </div></a
 >
-  <SpinningCube>
-    <img
-      class={`hexagon-clip hidden-opacity avatar img-${avatarSize}`}
-      src="/me-business-pic_compressed-cropped.png"
-    />
-  </SpinningCube>
-</div>
-<!-- </div>
-  <div class="hidden avatar-container hexagon-clip">
-    <img
-      class={`hexagon-clip avatar img-${avatarSize}`}
-      src="/me-business-pic_compressed-cropped.png"
-    />
-  </div>
-</div> -->
 <script>
   import { observe } from "./Inview";
 
@@ -69,7 +64,7 @@ const { avatarSize = "large", animateOnce = false } = Astro.props;
       backdrop-filter: none;
     }
     100% {
-      background-color: rgba(var(--background-color), 0.8);
+      background-color: rgba(var(--current-bg), 0.5);
     }
   }
   @keyframes appear {
@@ -80,7 +75,7 @@ const { avatarSize = "large", animateOnce = false } = Astro.props;
       opacity: 0;
     }
     100% {
-      background-color: rgba(var(--background-color), 0.8);
+      opacity: 1;
     }
   }
   .avatar-container .img-large,
@@ -91,7 +86,8 @@ const { avatarSize = "large", animateOnce = false } = Astro.props;
     left: 0;
     z-index: 5;
     opacity: var(--opacity, 0);
-    background-color: white;
+    backdrop-filter: blur(10px);
+    background-color: rgba(var(--current-bg), 0.5);
   }
 
   .animate.avatar-container.animate .img-large,
@@ -130,12 +126,12 @@ const { avatarSize = "large", animateOnce = false } = Astro.props;
   .avatar-container {
     --animation-duration: 1s;
     --animation-delay: 0s;
-    --background-color: 255, 255, 255;
+    --background-color: var(--current-bg);
     margin: 0 auto;
     width: fit-content;
     padding: var(--hex-padding);
     backdrop-filter: blur(10px);
-    background-color: rgba(var(--background-color), 0.8);
+    background-color: rgba(var(--current-bg), 0.5);
     --hexagon-slant: 25%;
     clip-path: polygon(
       50% 0%,

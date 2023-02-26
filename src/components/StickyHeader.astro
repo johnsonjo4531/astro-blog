@@ -10,11 +10,9 @@ const { avatarSize = "medium" } = Astro.props;
 
 <div class="top-sentinel"></div>
 <header class="sticky-header is-sticky">
-  <a href="/"
-    ><div class="header-avatar-container no-animate-on-render">
-      <Avatar animateOnce={true} avatarSize={avatarSize} />
-    </div></a
-  >
+  <div class="header-avatar-container no-animate-on-render">
+    <Avatar animateOnce={true} avatarSize={avatarSize} />
+  </div>
   <a class="link-no-style" href="/"
     ><h2 class="name text-opposite-gradient"><span>Jigs'</span> Blog</h2></a
   >
@@ -50,6 +48,7 @@ const { avatarSize = "medium" } = Astro.props;
     border-bottom: 1em solid rgba(var(--current-bg), 0.6);
   }
   .sticky-header.is-sticky {
+    backdrop-filter: blur(10px);
     background-color: rgba(var(--current-bg), 0.7);
     backdrop-filter: blur(25px);
   }
