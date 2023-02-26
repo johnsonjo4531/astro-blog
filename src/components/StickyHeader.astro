@@ -9,9 +9,9 @@ const { avatarSize = "medium" } = Astro.props;
 ---
 
 <div class="top-sentinel"></div>
-<header class="sticky-header">
+<header class="sticky-header is-sticky">
   <a href="/"
-    ><div class="header-avatar-container">
+    ><div class="header-avatar-container no-animate-on-render">
       <Avatar animateOnce={true} avatarSize={avatarSize} />
     </div></a
   >
@@ -32,13 +32,10 @@ const { avatarSize = "medium" } = Astro.props;
       document
         .querySelector(".no-animate-on-render")
         ?.classList.remove("no-animate-on-render"),
-    300
+    1000
   );
 </script>
 <style is:inline>
-  .no-animate-on-render {
-    opacity: 0;
-  }
   .sticky-header {
     z-index: 1000;
     position: sticky;
@@ -103,7 +100,7 @@ const { avatarSize = "medium" } = Astro.props;
       --uimg-size: 250;
     }
   }
-  .no-animate-on-render {
+  .is-sticky .no-animate-on-render {
     opacity: 0;
   }
 
