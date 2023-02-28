@@ -5,7 +5,8 @@
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "astro build",
+		"build": "npm run build:astro && npm run build:vite",
+		"build:astro": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
 		"build:vite": "vite build public/experiments/*/"
