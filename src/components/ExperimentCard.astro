@@ -1,0 +1,101 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  experiment: CollectionEntry<"experiment">;
+}
+
+const { experiment } = Astro.props;
+---
+
+<section class="blog-post">
+  <h2>{experiment.data.title}</h2>
+  <time>{experiment.data.timetext}</time>
+  <p class="highlighted-card-section">{experiment.data.description}</p>
+  <a href={experiment?.data.href}></a>
+</section>
+
+<style>
+  @keyframes mesmerize {
+    33% {
+      --border-color: rgba(var(--current-bg), 0.25);
+      border-color: var(--border-color);
+    }
+
+    66% {
+      --border-color: rgba(var(--accent), 0.25);
+      border-color: var(--border-color);
+    }
+
+    100% {
+      --border-color: rgba(var(--accent-bg), 0.15);
+      border-color: var(--border-color);
+    }
+  }
+
+  @keyframes mesmerize-bg {
+    33% {
+      --border-color: rgba(var(--current-bg), 0.35);
+      background-color: var(--border-color);
+    }
+
+    66% {
+      --border-color: rgba(var(--accent), 0.35);
+      background-color: var(--border-color);
+    }
+
+    100% {
+      --border-color: rgba(var(--accent-bg), 0.15);
+      background-color: var(--border-color);
+    }
+  }
+
+  .blog-post {
+    --animation-duration: 3s;
+    position: relative;
+    display: block;
+    cursor: pointer;
+    --border-color: rgba(var(--accent-bg), 0.15);
+    --blog-post-padding: 30px;
+    padding: 7px 30px;
+    font-size: 1em;
+    background-color: rgba(var(--opposite-bg), 0.2);
+    color: rgba(var(--current-color));
+    backdrop-filter: blur(3px);
+    padding: var(--blog-post-padding);
+    border-radius: 12px;
+    border: 12px solid;
+    border-color: var(--border-color);
+    text-decoration: none !important;
+    cursor: pointer;
+    margin: 1.4em 0;
+  }
+
+  .blog-post:hover {
+    animation: mesmerize var(--animation-duration) linear 1;
+  }
+
+  .blog-post > a {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  time {
+    display: inline-block;
+    margin: 0 0 1.7em;
+  }
+
+  .highlighted-card-section {
+    display: block;
+    background-color: var(--border-color);
+    padding: var(--blog-post-padding);
+    margin: 0 calc(-1 * var(--blog-post-padding))
+      calc(-1 * var(--blog-post-padding)) calc(-1 * var(--blog-post-padding));
+  }
+
+  .blog-post:hover .highlighted-card-section {
+    animation: mesmerize-bg var(--animation-duration) linear 1;
+  }
+</style>

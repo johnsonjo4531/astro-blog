@@ -2,6 +2,7 @@ import {defineConfig} from "astro/config";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import codesandbox from "remark-codesandbox";
+import yaml from "@rollup/plugin-yaml";
 
 // https://astro.build/config
 import mdx from "@astrojs/mdx";
@@ -9,9 +10,9 @@ import mdx from "@astrojs/mdx";
 // https://astro.build/config
 export default defineConfig({
   vite: {
-    plugins: [
-      // webcomponents()
-    ],
+    vite: {
+      plugins: [yaml()],
+    },
   },
   integrations: [
     mdx({

@@ -2,7 +2,7 @@
 import SpinningCube from "./SpinningCube.astro";
 export interface Props {
   avatarSize?: string;
-  animateOnce: true;
+  animateOnce?: true;
 }
 
 const { avatarSize = "large", animateOnce = false } = Astro.props;

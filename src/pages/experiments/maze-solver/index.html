@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Maze</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="gameConsole">
+      <div class="gameConsole-section gameConsole-left gameConsole-side">
+        <h1>Maze</h1>
+        <div></div>
+      </div>
+      <div class="gameConsole-section gameConsole-center">
+          <canvas data-view="game" id="maze" width="1000" height="1000" class="hidden" style="width: 100%; max-width: 100vh; max-height: 100vh;"></canvas>
+          <div data-view="menu" id="menu-window" class="hidden maze-col-panel">
+            <h2>Maze Game</h2>
+            <button class="js-open" data-view-target="gameStart">Start Game</button>
+            <button class="js-open" data-view-target="highScore">High Scores</button>
+            <button class="js-open" data-view-target="credits">Credits</button>
+          </div>
+          <div data-view="gameStart" id="game-start-window" class="hidden maze-col-panel">
+            <h2>Starting Lounge</h2>
+            <h3>Choose Maze Size</h3>
+            <button class="js-startMaze" data-size="5">5x5</button>
+            <button class="js-startMaze" data-size="10">10x10</button>
+            <button class="js-startMaze" data-size="15">15x15</button>
+            <button class="js-startMaze" data-size="20">20x20</button>
+            <button class="js-open" data-view-target="menu">Main Menu</button>
+          </div>
+          <div data-view="nameEntry" id="game-start-window" class="hidden maze-col-panel">
+            <h2>Congratulations you got a High Score!</h2>
+            <h3>Enter Name for Score Board</h3>
+            <input type="text" name="name" id="name-input">
+            <button class="js-submitName">Enter</button>
+          </div>
+          <div data-view="gameOver" class="hidden maze-col-panel">
+            <h2>Score Board</h2>
+            <h3>You played the <span class="js-maze-size-here"></span></h3>
+            <h5>Score: <span class="js-score-here"></span></h5>
+            <h5>Time: <span class="js-time-here"></span></h5>
+            <button class="js-startMaze js-replay" data-size="NaN">↻ &nbsp Replay <span class="js-maze-size-here"></span></button>
+            <button class="js-open" data-view-target="gameStart">Change Size</button>
+            <button class="js-open" data-view-target="menu">Main Menu</button>
+          </div>
+          <div data-view="credits" class="hidden maze-col-panel">
+            <h2>Credits</h2>
+            <h3>By:<br>John Johnson<br>USU<br>for CS5410</h3>
+            <button class="js-open" data-view-target="menu">Main Menu</button>
+          </div>
+          <div data-view="highScore" class="hidden maze-col-panel">
+            <button class="js-open" data-view-target="menu">Main Menu</button>
+            <div data-scoreboard="5"></div>
+            <div data-scoreboard="10"></div>
+            <div data-scoreboard="15"></div>
+            <div data-scoreboard="20"></div>
+          </div>
+      </div>
+      <div class="gameConsole-section gameConsole-right gameConsole-side">
+        <div data-view="game" class="hidden maze-col-panel">
+          <div>
+              <div>
+                  <h5>Score: <span class="js-score-here"></span></h5>
+                  <h5>Time: <span class="js-time-here"></span></h5>
+              </div>
+              <div class="maze-col-panel">
+                  <h3>Maze Controls</h3>
+                  <h5>Movement: ↑,←,↓,→; w,a,s,d; i,j,k,l</h5>
+                  <h5>Hint toggle: h</h5>
+                  <h5>Breadcrumbs toggle: b</h5>
+                  <h5>Path to finish toggle: p</h5>
+                  <h5>Score toggle: y</h5>
+              </div>
+              <button class="js-open" data-view-target="menu">Main Menu</button>
+          </div>
+        </div>
+        <div data-view="gameOver" class="hidden maze-col-panel">
+          <div data-scoreboard="5"></div>
+          <div data-scoreboard="10"></div>
+          <div data-scoreboard="15"></div>
+          <div data-scoreboard="20"></div>
+        </div>
+      </div>
+  </div>
+  <script src="modules/$$.js"></script>
+  <script src="modules/Events.js"></script>
+  <script src="modules/ClassUtils.js"></script>
+  <script src="modules/Maze.js"></script>
+  <script src="modules/MazeRenderer.js"></script>
+  <script src="modules/GameState.js"></script>
+  <script src="modules/KeyCommands.js"></script>
+  <script src="modules/MazeGame.js"></script>
+  <script src="modules/ViewUtils.js"></script>
+  <script src="modules/ScoreBoard.js"></script>
+  <script src="modules/GameOverView.js"></script>
+  <script src="modules/GameView.js"></script>
+  <script src="modules/NameEntryView.js"></script>
+  <script src="modules/ViewSwitcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

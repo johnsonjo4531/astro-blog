@@ -1,0 +1,21 @@
+---
+import BlogLayout from "../layouts/BlogLayout.astro";
+import { getCollection } from "astro:content";
+import Footer from "../components/Footer.astro";
+import ExperimentCard from "../components/ExperimentCard.astro";
+// Get all entries from a collection. Requires the name of the collection as an argument.
+const experiments = await getCollection("experiment", (x) => x);
+---
+
+<BlogLayout title="Howdy!!">
+  <div class="container">
+    {
+      experiments.map((experiment) => (
+        <ExperimentCard experiment={experiment} />
+      ))
+    }
+  </div>
+  <Footer avatarSize={"large"} />
+</BlogLayout>
+
+<style></style>

@@ -9,15 +9,16 @@ const { blogPost } = Astro.props;
 ---
 
 <section class="blog-post">
-  <h2>{blogPost.data.title}</h2><time
-    datetime={blogPost.data.date.toISOString()}
-  >
-    {
-      new Intl.DateTimeFormat("en-us", {
-        dateStyle: "long",
-      }).format(blogPost.data.date)
-    }
-  </time>
+  <h2>{blogPost.data.title}</h2>
+  {
+    (
+      <time datetime={blogPost.data.date.toISOString()}>
+        {new Intl.DateTimeFormat("en-us", {
+          dateStyle: "long",
+        }).format(blogPost.data.date)}
+      </time>
+    )
+  }
   <p class="highlighted-card-section">{blogPost.data.description}</p>
   <a href={`/blog/${blogPost.slug}`}></a>
 </section>
