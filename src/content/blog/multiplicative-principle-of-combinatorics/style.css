@@ -1,0 +1,10 @@
+.grilled-cheese-grid {
+	background-color: var(--logo-gradient);
+	display: grid;
+}
+
+.grilled-cheese-grid > * {
+	background-color: var(--logo-green);
+	height: 1fr;
+	width: 1fr;
+}

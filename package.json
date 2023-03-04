@@ -5,22 +5,25 @@
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "npm run build:astro && npm run build:vite",
+		"build": "npm run build:astro && npm run build:parcel",
 		"build:astro": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"build:vite": "vite build public/experiments/*/"
+		"build:parcel": "parcel ./experiments-static/*/index.html --dist-dir ./src/experiments/"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^0.17.2",
 		"astro": "^2.0.13",
 		"css-doodle": "^0.34.3",
 		"katex": "^0.16.4",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
 		"rehype-katex": "^6.0.2",
 		"remark-math": "^5.1.1"
 	},
 	"devDependencies": {
 		"@rollup/plugin-yaml": "^4.0.1",
+		"parcel": "^2.8.3",
 		"remark-codesandbox": "^0.10.1"
 	}
 }
