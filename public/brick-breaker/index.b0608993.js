@@ -1,0 +1,2 @@
+var n,t;window.Random=(t=!1,{nextDouble:function(){return Math.random()},nextRange:function(n,t){var a=t-n+1;return Math.floor(Math.random()*a+n)},nextCircleVector:function(){var n=2*Math.random()*Math.PI;return{x:Math.cos(n),y:Math.sin(n)}},nextGaussian:function(a,r){if(t)return t=!1,a+n*r;t=!0;var o=0,e=0,h=0;do{h=(o=2*Math.random()-1)*o+(e=2*Math.random()-1)*e}while(h>=1);return h=Math.sqrt(-2*Math.log(h)/h),n=e*h,a+o*h*r}});
+//# sourceMappingURL=index.b0608993.js.map

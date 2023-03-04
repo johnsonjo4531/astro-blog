@@ -1,18 +1,22 @@
 {
-	"name": "",
+	"name": "astro-blog",
+	"private": true,
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "npm run build:astro && npm run build:parcel",
+		"build": "npm run build:parcel && npm run build:astro",
 		"build:astro": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"build:parcel": "parcel ./experiments-static/*/index.html --dist-dir ./src/experiments/"
+		"build:parcel": "parcel build --no-content-hash ./experiments-static/*/index.html --dist-dir ./public/"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^0.17.2",
+		"@astrojs/react": "^2.0.2",
+		"@types/react": "^18.0.28",
+		"@types/react-dom": "^18.0.11",
 		"astro": "^2.0.13",
 		"css-doodle": "^0.34.3",
 		"katex": "^0.16.4",
@@ -24,6 +28,7 @@
 	"devDependencies": {
 		"@rollup/plugin-yaml": "^4.0.1",
 		"parcel": "^2.8.3",
+		"process": "^0.11.10",
 		"remark-codesandbox": "^0.10.1"
 	}
 }

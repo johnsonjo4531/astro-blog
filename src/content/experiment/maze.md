@@ -1,7 +1,7 @@
 ---
 title: Maze Solving
-contentSlug: /experiments/maze-solver/
-href: /experiments/maze-solver/
+contentSlug: /maze-solver/
+href: /maze-solver/
 timetext: During my CS education at USU
 description: >
   This was a maze generating and solving game I made for my Game Development class.

@@ -1,6 +1,6 @@
 ---
 title: Canvax Chat
-contentSlug: /experiments/canvax-chat/
+contentSlug: /canvax-chat/
 href: https://github.com/johnsonjo4531/CanvaxChat
 timetext: During a Major League Hackaton (MLH) while at USU
 description: >

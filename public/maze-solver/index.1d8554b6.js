@@ -1,0 +1,2 @@
+window.GameOverView=function(e,r,n){return function(t,i){i=r(i);return{render(r,o){var d=r.maze.matrix.length,a=r.player.score;if(!o&&e.isTopScore(d,a))return t.setView("nameEntry",r);i.render(),n(".js-score-here").forEach((e=>{e.innerHTML="",e.appendChild(document.createTextNode(a))})),n(".js-time-here").forEach((e=>{e.innerHTML="",e.appendChild(document.createTextNode(r.timeString))}))},unrender(){i.unrender()}}}}(ScoreBoard,ViewUtils.showUnshowRenderer,$$);
+//# sourceMappingURL=index.1d8554b6.js.map

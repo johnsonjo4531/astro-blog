@@ -1,0 +1,2 @@
+window.$=Object.assign(((e,r=document)=>{var t=Array.from([r.querySelector(e)]).filter((e=>!!e));return 0===t.length&&console.warn(new Error(`Empty selection with selector '${e}'.`)),t}),{text:e=>document.createTextNode()}),window.$$=(e,r=document)=>{var t=Array.from(r.querySelectorAll(e)).filter((e=>!!e));return 0===t.length&&console.warn(new Error(`Empty selection with selector '${e}'.`)),t};
+//# sourceMappingURL=index.c01e7961.js.map

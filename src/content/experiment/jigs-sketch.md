@@ -1,6 +1,6 @@
 ---
 title: Jigs Sketch
-contentSlug: /experiments/jigs-sketch/
+contentSlug: /jigs-sketch/
 href: https://github.com/johnsonjo4531/sketch
 timetext: Built this during Corona virus lockdown for fun!
 description: >
