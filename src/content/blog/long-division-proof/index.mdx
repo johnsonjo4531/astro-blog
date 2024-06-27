@@ -161,17 +161,28 @@ So, we know $n-mx_1-mx_2-\ldots-mx_y$ is the remainder, and $x_1+x_2+\ldots+x_y+
 
 Thus we need to prove equality of:
 
-$$\frac{n}{m}=x_1+x_2+\ldots+x_y+\frac{n-mx_1-mx_2-\ldots-mx_y}{m}$$
+$$
+\frac{n}{m}=x_1+x_2+\ldots+x_y+\frac{n-mx_1-mx_2-\ldots-mx_y}{m}
+$$
+
 
 Let's multiply each side of the equation by $m$ and then prove equality by simplifying the right hand side.
 
-$$m\cdot\frac{n}{m}=m\cdot(x_1+x_2+\ldots+x_y+\frac{n-mx_1-mx_2-\ldots-mx_y}{m})$$
+$$
+m\cdot\frac{n}{m}=m\cdot(x_1+x_2+\ldots+x_y+\frac{n-mx_1-mx_2-\ldots-mx_y}{m})
+$$
 
-$$n=m\cdot(x_1+x_2+\ldots+x_y)+m\cdot(\frac{n-mx_1-mx_2-\ldots-mx_y}{m})$$
+$$
+n=m\cdot(x_1+x_2+\ldots+x_y)+m\cdot(\frac{n-mx_1-mx_2-\ldots-mx_y}{m})
+$$
 
-$$n=mx_1+mx_2+\ldots+mx_y+n-mx_1-mx_2-\ldots-mx_y$$
+$$
+n=mx_1+mx_2+\ldots+mx_y+n-mx_1-mx_2-\ldots-mx_y
+$$
 
-$$n=n$$
+$$
+n=n
+$$
 
 ## Proof Attempt 2
 
@@ -180,24 +191,36 @@ It's very similar, but better in my opinion as I did not have to manipulate both
 
 We could do this one other way where we start at:
 
-$$\frac{n}{m}=x_1+x_2+\ldots+x_y+\frac{n-mx_1-mx_2-\ldots-mx_y}{m}$$
+$$
+\frac{n}{m}=x_1+x_2+\ldots+x_y+\frac{n-mx_1-mx_2-\ldots-mx_y}{m}
+$$
 
 We could just simplify the right hand side of the equation to make it equal the left hand side.
 
 (Distributive property of division and subtraction) 
 
-$$\frac{n}{m}=x_1+x_2+\ldots+x_y+\frac{n}{m}-\frac{mx_1}{m}-\frac{mx_2}{m}-\ldots-\frac{mx_y}{m}$$
+$$
+\frac{n}{m}=x_1+x_2+\ldots+x_y+\frac{n}{m}-\frac{mx_1}{m}-\frac{mx_2}{m}-\ldots-\frac{mx_y}{m}
+$$
 
 (Cancelling out like terms with division)
 
-$$\frac{n}{m}=x_1+x_2+\ldots+x_y+\frac{n}{m}-x_1-x_2-\ldots-x_y$$
+$$
+\frac{n}{m}=x_1+x_2+\ldots+x_y+\frac{n}{m}-x_1-x_2-\ldots-x_y
+$$
 
 (Commutative property of addition/subtraction)
 
-$$\frac{n}{m}=(x_1-x_1)+(x_2-x_2)+\ldots+(x_y-x_y)+\frac{n}{m}$$
+$$
+\frac{n}{m}=(x_1-x_1)+(x_2-x_2)+\ldots+(x_y-x_y)+\frac{n}{m}
+$$
 
 (Cancelling out like terms with subtraction)
 
-$$\frac{n}{m}=\frac{n}{m}$$
+$$
+\frac{n}{m}=\frac{n}{m}
+$$
 
-$$\blacksquare$$
+$$
+\blacksquare
+$$

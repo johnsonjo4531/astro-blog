@@ -1,19 +1,31 @@
 ---
-import { getCollection } from "astro:content";
 import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 import "katex/dist/katex.min.css";
 import Footer from "../../components/Footer.astro";
-// 1. Generate a new path for every collection entry
-export async function getStaticPaths() {
-  const blogEntries = await getCollection("blog");
-  return blogEntries.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
-}
+import { getCollection } from "astro:content";
 // 2. When it's time to render, you can get the entry directly from the prop
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+// 1. Generate a new path for every collection entry
+export async function getStaticPaths() {
+  function normalizeSlug(slug: string) {
+    return slug.replace(/\//, "--");
+  }
+
+  const blogEntries = await getCollection("blog");
+  console.log(
+    "slugs",
+    blogEntries.map((x) => normalizeSlug(x.slug)),
+  );
+  return blogEntries.map((entry) => {
+    const slug = normalizeSlug(entry.slug);
+    return {
+      params: { slug },
+      props: { entry },
+    };
+  });
+}
 ---
 
 <BlogPostLayout title={entry.data.title}>
@@ -24,3 +36,10 @@ const { Content } = await entry.render();
     <Footer avatarSize={"large"} />
   </div>
 </BlogPostLayout>
+
+<style>
+  spoiler {
+    color: white;
+    background-color: cornflowerblue;
+  }
+</style>

@@ -1,4 +1,4 @@
-import { observe } from "./Inview";
+// import { observe } from "./Inview";
 
 // get the sticky element
 const header = document.querySelector(".sticky-header");

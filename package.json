@@ -1,37 +1,36 @@
 {
-	"name": "astro-blog",
-	"private": true,
-	"type": "module",
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
-		"build": "npm run build:parcel && npm run build:astro",
-		"build:astro": "astro build",
-		"preview": "astro preview",
-		"astro": "astro",
-		"build:parcel": "parcel build --no-content-hash ./experiments-static/*/index.html --dist-dir ./public/"
-	},
-	"engines": {
-		"node": ">=16.12.0"
-	},
-	"dependencies": {
-		"@astrojs/mdx": "^0.17.2",
-		"@astrojs/react": "^2.0.2",
-		"@types/react": "^18.0.28",
-		"@types/react-dom": "^18.0.11",
-		"astro": "^2.0.13",
-		"css-doodle": "^0.34.3",
-		"katex": "^0.16.4",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"rehype-katex": "^6.0.2",
-		"remark-math": "^5.1.1"
-	},
-	"devDependencies": {
-		"@rollup/plugin-yaml": "^4.0.1",
-		"parcel": "^2.8.3",
-		"process": "^0.11.10",
-		"remark-codesandbox": "^0.10.1"
-	}
+  "name": "astro-blog",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "npm run build && astro dev",
+    "start": "astro dev",
+    "build": "npm run build:vite && npm run build:astro",
+    "build:astro": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "build:vite": "vite build"
+  },
+  "engines": {
+    "node": ">=16.12.0"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^1.1.2",
+    "@astrojs/react": "^3.0.3",
+    "@rollup/plugin-yaml": "^4.1.2",
+    "@types/react": "^18.2.30",
+    "@types/react-dom": "^18.2.14",
+    "astro": "^3.4.0",
+    "css-doodle": "^0.37.3",
+    "katex": "^0.16.9",
+    "process": "^0.11.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rehype-katex": "^7.0.0",
+    "remark-codesandbox": "^0.10.1",
+    "remark-directive": "^3.0.0",
+    "remark-math": "^5.0.0",
+    "typescript": "^5.2.2"
+  }
 }

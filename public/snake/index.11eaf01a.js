@@ -1,2 +1,0 @@
-window.throttle=function(n,l,t){var a,u,e,i=null,r=0;t||(t={});var o=function(){r=!1===t.leading?0:Date.now(),i=null,e=n.apply(a,u),i||(a=u=null)};return function(){var c=Date.now();r||!1!==t.leading||(r=c);var p=l-(c-r);return a=this,u=arguments,p<=0||p>l?(i&&(clearTimeout(i),i=null),r=c,e=n.apply(a,u),i||(a=u=null)):i||!1===t.trailing||(i=setTimeout(o,p)),e}};
-//# sourceMappingURL=index.11eaf01a.js.map

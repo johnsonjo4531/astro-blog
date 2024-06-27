@@ -1,2 +1,0 @@
-window.KeyCommands=function(o,m){var d=()=>m.push((()=>o.doCommand("move","n"))),a=()=>m.push((()=>o.doCommand("move","s"))),n=()=>m.push((()=>o.doCommand("move","w"))),r=()=>m.push((()=>o.doCommand("move","e")));return{w:d,i:d,arrowup:d,s:a,k:a,arrowdown:a,a:n,j:n,arrowleft:n,d:r,l:r,arrowright:r,h:()=>m.push((()=>o.doCommand("hintToggle"))),b:()=>m.push((()=>o.doCommand("breadCrumbsToggle"))),p:()=>m.push((()=>o.doCommand("shortestPathToggle"))),y:()=>m.push((()=>o.doCommand("scoreToggle")))}};
-//# sourceMappingURL=index.6105e52b.js.map

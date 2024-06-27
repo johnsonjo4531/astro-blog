@@ -1,2 +1,0 @@
-window.GameActions=function(){let d={paddleLeft(d,e){e.ready&&(e.paddle.x=Math.max(0,e.paddle.x-e.paddle.speed*d))},paddleRight(d,e){e.ready&&(e.paddle.x=Math.min(e.width-e.paddle.width,e.paddle.x+e.paddle.speed*d))}},e=KeyboardHandler();return{setupActions:function(){e.addAction("ArrowLeft",d.paddleLeft),e.addAction("ArrowRight",d.paddleRight)},keyboard:e,activate(){e.activate()},deactivate(){e.deactivate()},handle(d,a){e.handle(d,a)}}};
-//# sourceMappingURL=index.699e52c0.js.map
