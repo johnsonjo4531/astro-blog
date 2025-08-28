@@ -1,6 +1,6 @@
 ---
 title: Applications of the Multiplicative and Additive Principle of Combinatorics in Programming.
-date: 2020-02-07T03:43:23.030Z
+date: 2025-06-10T17:00:00.000Z
 published: true
 description: >
   I'm going to give a run through of two basic (though possibly not simple) combinatorics principles and their applications to programming. You probably have seen these principles before if you have taken a college algebra class. So, first I'll answer what is combinatorics:
@@ -32,15 +32,14 @@ So, first I'll answer what is combinatorics:
 Combinatorics is a branch of Mathematics that teaches you how
 to count the total number of "things" in some given situation usually these "things" are elements and they make up what is called a set, but we'll get to know more about that in a bit.
 
-
 It comes in handy in fields such as computer science and areas like probability. For example:
 
 - Computer Science Question, Determine how many iterations this program uses in terms of n and m, for any given n or m:
 
 ```js
-for(let i = 0; i < n; ++i) {
-  for(let j = 0; j < m; ++j) {
-    console.log(`(${i}, ${j})`)
+for (let i = 0; i < n; ++i) {
+  for (let j = 0; j < m; ++j) {
+    console.log(`(${i}, ${j})`);
   }
 }
 ```
@@ -80,7 +79,7 @@ $$
 P = \{1,2,3\} = \{3,2,1\} = \{1,1,1,1,1,2,3\} = \{2,2,1,1,1,3,3,3\}
 $$
 
-So, the most common form you might see of the above is the simplest and orderly one is $\{1,2,3\}$ though ordering really isn't that important other
+So, the most common form you might see of the above is the simplest and orderly one which is $\{1,2,3\}$ though ordering really isn't that important other
 than for illustrative purposes. As an example of sets that aren't equivalent none of the following are equivalent to each other, because some have different sizes (some have extra elements or too few), and some have different elements:
 
 $$
@@ -95,7 +94,7 @@ Sets can also be expressed using [Set Builder notation](<https://en.wikipedia.or
 but also sets can be denoted/expressed using natural language such as:
 
 - The set of all positive numbers
-  - represented as $\{1,2,3,4,5,6\}$
+  - represented as $\{1,2,3,4,5,6,\ldots\}$
 - The set of all positive even numbers
   - (In set notation you might write this as: $\{2,4,6,\ldots\}$)
 - The set of three distinctly labeled apples and two distinctly labeled oranges
@@ -109,21 +108,30 @@ As you can see sets can be defined by natural language, but just because they ca
 ## Additive principle of combinatorics
 
 > Definition:
-> if there are $x$ ways of doing one thing and $b$ ways of doing another 
+> if there are $x$ ways of doing one thing and $y$ ways of doing another
+> the additive principle of combinatorics tells you to add $x+y$ the two
+> when each event is independent from one another.
 
 An example is:
 
-Question: You have to travel to the airport. There are a few different ways that will get you there on time.
+Question: You have to travel to the airport. There are a few different methods of transport that will get you there on time (train, bike, or car), but **you can only use one method of transport to get there**.
 There are 3 routes by train, 2 routes by bike, and 6 routes by car. How many different routes are possible.
 
-:::spoiler
->Answer: Y
+Answer:
+
+:::
+Since the problem states you only use one mode of transport
+to get there you add the numbers of possibilities
+for each mode of transport the events of the modes
+of transport are independent (i.e. they stand alone
+and do not interact directly with one another)
+you add the numbers together for each mode of transport.
+So the answer is 3+2+6=11 ways.
 :::
 
 This ones very simple, but it is useful to try and differentiate from the next principle.
 
-
-## Multiplicative principle of combinatorics:
+## Multiplicative principle of combinatorics
 
 Tool two in our tool belt is
 called the multiplicative principle of combinatorics (multiplicative gets its name from multiplication).
@@ -165,7 +173,7 @@ we know they have the same size (more about [one-to-one correspondences a.k.a bi
 different way we can state the size of the above configuration of grilled cheeses:
 
 - (Geometrically) If you represent each grilled cheese as a 2D unit square (1x1). Each square along the x axis represents a sandwich with different bread with the same cheese and
-  each square along the x axis represents a sandwich with the same bread and different cheese.
+  each square along the y axis represents a sandwich with the same bread and different cheese.
 
 The geometric form might look like this:
 
@@ -194,7 +202,7 @@ console.log(k + " total grilled-cheeses");
 ```
 
 So, now we can hopefully intuitively see there are $3 \cdot 2=6$ possible combinations by noticing that each
-cell of the above table counts as one valid sandwich and that the table is made up of three columns (the same number as our cheeses) and two columns (the same number as our breads).
+cell of the above table counts as one valid sandwich and that the table is made up of three rows (the same number as our cheeses) and two columns (the same number as our breads).
 Since we can count the number of cells to get the total number of sandwiches we can now compute the number of cells by $\text{rows} \cdot \text{columns} = \text{cells}$. We can generalize this visualization
 to any nonnegative number $m$ of bread choices and $n$ of cheese choices for $m \cdot n$ possible grilled cheese sandwiches (given the above conditions of course).
 
@@ -229,7 +237,7 @@ I haven't really prepped you enough to help you figure it out without some amoun
 
 Q: How many possible orderings are there of the numbers 1,2,3 if each number must be used once and only once?
 
-A: Well we start by making our first choice in the order we have 3 choices from the number 1, 2, and 3. Once we've chosen our first number (e.g. say it's 3) we then have two possible choices left over which are the ones
+A: Well we start by making our first choice in the order we have 3 choices from the numbers 1, 2, and 3. Once we've chosen our first number (e.g. say it's 3) we then have two possible choices left over which are the ones
 we didn't choose yet (e.g. because of our previous example choice we would have 1 and 2 as possible choices, say we choose 2), and then finally we have only 1 choice for choosing the last one (e.g. we choose 1).
 
 Therefore there are $3\cdot2\cdot1=3! = 6$ possible orderings.

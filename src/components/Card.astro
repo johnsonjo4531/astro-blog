@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import MarkdownWithMath from "./MarkdownWithMath.astro"
 
 export interface Props {
   blogPost: CollectionEntry<"blog">;
@@ -19,7 +20,7 @@ const { blogPost } = Astro.props;
       </time>
     )
   }
-  <p class="highlighted-card-section">{blogPost.data.description}</p>
+  <div class="highlighted-card-section"><MarkdownWithMath content={blogPost.data.description}/></div>
   <a href={`/blog/${blogPost.slug}`}></a>
 </section>
 

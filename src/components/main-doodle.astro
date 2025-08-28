@@ -1,3 +1,7 @@
+---
+import "css-doodle";
+---
+
 <style>
   css-doodle {
     height: 100vh;
@@ -12,10 +16,10 @@
     background-color: seagreen;
   }
   css-doodle:after {
-    backdrop-filter: blur(1px);
-    background-color: rgba(255, 255, 255, 0.2);
+    /* backdrop-filter: blur(0.1px);*/
+    background-color: rgba(255, 255, 255, 0.1);
     content: "";
-    z-index: -1;
+    z-index: 1;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -24,22 +28,21 @@
   }
   @media (prefers-color-scheme: dark) {
     css-doodle:after {
-      background-color: rgba(var(--dark-color-scheme), 0.2);
+      background-color: rgba(255, 255, 255, 0.1);
     }
   }
 </style>
 
 <script>
   import "css-doodle";
-
-  document.addEventListener("load", () => {
+  window.addEventListener("load", () => {
     const doodle: null | (Element & { update(css?: string): void }) =
       document.querySelector("css-doodle");
     /* update styles and refresh */
-    doodle?.update(`
+    doodle.update(`
     @grid: 14 / var(--width) var(--height) noclip;
     @shape: hexagon;
-    conatin: none;
+    contain: none;
 
     background-color: hsla(
       120, calc(60% * (@x + @y) / (@max-row + @max-col)), calc(100% * (@x + @y) / (@max-row + @max-col)),

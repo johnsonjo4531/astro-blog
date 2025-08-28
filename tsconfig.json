@@ -2,11 +2,10 @@
   "extends": "astro/tsconfigs/strictest",
   "compilerOptions": {
     "moduleResolution": "NodeNext",
+    "module": "NodeNext",
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "skipLibCheck": true,
-    "types": [
-      "node"
-    ],
+    "types": ["node"]
   }
 }

@@ -3,6 +3,7 @@ import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 import "katex/dist/katex.min.css";
 import Footer from "../../components/Footer.astro";
 import { getCollection } from "astro:content";
+import Spoiler from "../../components/Spoiler.astro";
 // 2. When it's time to render, you can get the entry directly from the prop
 const { entry } = Astro.props;
 const { Content } = await entry.render();
@@ -26,20 +27,51 @@ export async function getStaticPaths() {
     };
   });
 }
+
+export const components = {
+  spoiler: Spoiler,
+};
 ---
 
 <BlogPostLayout title={entry.data.title}>
   <div class="container">
     <h1>{entry.data.title}</h1>
 
-    <Content />
+    <Content components={components} />
     <Footer avatarSize={"large"} />
   </div>
 </BlogPostLayout>
 
-<style>
-  spoiler {
-    color: white;
-    background-color: cornflowerblue;
+<style is:global>
+
+  details {
+    position: relative;
+    padding: 0.7em;
+    padding-left: 1.7em;
+    font-size: 1.15em;
+    border-radius: 12px;
+    background-color: rgba(var(--accent-bg), 0.2);
+    backdrop-filter: blur(4px);
+    margin: 1.7em 0;
+  }
+  summary {
+    margin: -0.7em -0.7em -0.7em -1.7em;   
+    padding: 0.7em 0.7em 0.7em 1.7em;
+    background-color: rgba(var(--accent-bg), 0.2);
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  details[open] summary{
+    border-radius: 12px 12px 0 12px;
+  }
+  details::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1.2em;
+    border-radius: 12px 0 0 12px;
+    background-color: var(--info-color);
   }
 </style>

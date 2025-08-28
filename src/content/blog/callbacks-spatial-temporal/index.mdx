@@ -10,7 +10,7 @@ description: >
   coding with constraints on these axes. But, in this post I'll take you through how you could code each of
   these axes using callbacks.
 published: false
-slug: callbacks-spatial-temporal-and-singular-plural
+slug: callbacks-spatial-temporal
 tags:
   - promises
   - callbacks
@@ -25,37 +25,35 @@ fits best for the job which makes Kris Kowal's explanation so beneficial, and wh
 coding with constraints on these axes. But, in this post I'll take you through how you could handle each of
 these axes using callbacks.
 
-
 As an example of a data-type in $\{Singular,Plural\}\times\{Spatial,Temporal\}$ space a promise in his definition gives singular values in and some temporal space this is as opposed to plural and spacial space respectively. He defines the temporal space as something that comes at some variable point in time as opposed to spacial space which is already
 assumed to be in the current point of time, but in some variable location in memory.
 
 He makes a little table for different types of values:
 
-|          | Singular         |	Plural             |
-|----------|------------------|--------------------|
+|          | Singular         | Plural              |
+| -------- | ---------------- | ------------------- |
 | Spatial  | `Value`          | `Iterable<Value>`   |
-| Temporal | `Promise<Value>` |	`Observable<Value>`  |
+| Temporal | `Promise<Value>` | `Observable<Value>` |
 
-For Plural/Temporal we usually use AsyncIterables or Streams in JS. Observables are still not quite a part of JS yet and might not be ever... 
+For Plural/Temporal we usually use AsyncIterables or Streams in JS. Observables are still not quite a part of JS yet and might not be ever...
 Well, a callback can actually work with all of those different axes of Space/Temporal and Singular/Plural.
 Which we'll be shown by example in the rest of this post.
-
 
 ## Singular/Spatial. (Though this is a bit contrived it illustrates the point. Also, by my experience, this is the least common use you'll see for a callback.)
 
 It's Singular, because it is only called once. It's also spatial, because the data that is sent into the callback (which is technically nothing/undefined)
-is already there when the function is called (that would make it vacuosly spacial, but I couldn't think of a more fitting example off the top of my head haha).
+is already there when the function is called (that would make it vacuosly spatial, but I couldn't think of a more fitting example off the top of my head haha).
 
 ```js codesandbox=vanilla
 /* This function asserts */
-function assertCBThrows (cb, message) {
+function assertCBThrows(cb, message) {
   let thrown = false;
   try {
     cb();
   } catch (err) {
-    thrown = true
+    thrown = true;
   }
-  if(thrown) {
+  if (thrown) {
     console.info("Assertion Properly threw:", message);
   } else {
     console.error("AssertionError:", message, "Assertion should have thrown.");
@@ -63,12 +61,12 @@ function assertCBThrows (cb, message) {
 }
 
 assertCBThrows(() => {
-  throw new Error("oops")
+  throw new Error("oops");
 }, "Callback should throw");
-assertCBThrows(() => 2 + 2, "2 + 2 is an error")
+assertCBThrows(() => 2 + 2, "2 + 2 is an error");
 ```
 
-## Plural/Spatial.
+## Plural/Spatial
 
 This is a pretty common use case for Array.prototype methods such as good old
 `.map`, `.filter`, `.find`, `.forEach`, `.some`, `.any`, etc...
@@ -78,15 +76,15 @@ and also called on only elements currently in memory (Spatial)
 
 ```js codesandbox=vanilla
 // This is not production ready code and is for illustrative purposes
-function map (arr, cb) {
-    const mappedItems = [];
-    for(const item of arr) {
-        mappedItems.push(cb(item));
-    }
-    return mappedItems;
+function map(arr, cb) {
+  const mappedItems = [];
+  for (const item of arr) {
+    mappedItems.push(cb(item));
+  }
+  return mappedItems;
 }
 
-console.log(map([1,2,3], number => number + 2));
+console.log(map([1, 2, 3], (number) => number + 2));
 ```
 
 ## Singular/Temporal
@@ -105,15 +103,15 @@ and is also only ever called one time (Singular)
 
 ```js codesandbox=vanilla
 // Version 3.0. Better than the last two non-existent versions!
-function sleep3000 (cb) {
-    setTimeout(() => {
-        cb("Welcome to the future 😎!")
-    }, 3000);
+function sleep3000(cb) {
+  setTimeout(() => {
+    cb("Welcome to the future 😎!");
+  }, 3000);
 }
 
-sleep3000(message => {
-    console.log(message);
-})
+sleep3000((message) => {
+  console.log(message);
+});
 ```
 
 ## Plural/Temporal
@@ -129,34 +127,52 @@ and manipulated according to your liking.
 (I have no idea why I over-complicated this last example, but anyways the main function is `on` the rest is just utility stuff)
 
 ```js codesandbox=vanilla
-document.body.style.margin = 0
-function on (els, event, cb) {
-    for(const el of els) {
-        el.addEventListener(event, cb);
-    }
+document.body.style.margin = 0;
+function on(els, event, cb) {
+  for (const el of els) {
+    el.addEventListener(event, cb);
+  }
 }
-function text (string) {
-    return document.createTextNode(string);
+function text(string) {
+  return document.createTextNode(string);
 }
-function el (element, props, ...children) {
-    const el = document.createElement(element);
-    Object.assign(el, props);
-    Object.assign(el.style, props.style);
-    for(const child of children) {
-        el.appendChild(child);
-    }
-    return el;
+function el(element, props, ...children) {
+  const el = document.createElement(element);
+  Object.assign(el, props);
+  Object.assign(el.style, props.style);
+  for (const child of children) {
+    el.appendChild(child);
+  }
+  return el;
 }
 
-const centerStyles  = {
-    'align-items': "center", 
-    "display": "flex", 
-    "justify-content": "center", 
-    "font-color": "#ccc"
+const centerStyles = {
+  "align-items": "center",
+  display: "flex",
+  "justify-content": "center",
+  "font-color": "#ccc",
 };
-document.body.appendChild(el('div', {id: 'foo', style: {height: '33vh', ...centerStyles }}, text("Hover me")))
-document.body.appendChild(el('div', {id: 'bar', style: {height: '33vh', ...centerStyles }}, text("Hover me")))
-document.body.appendChild(el('div', {id: 'baz', style: {height: '33vh', ...centerStyles }}, text("Hover me")))
+document.body.appendChild(
+  el(
+    "div",
+    { id: "foo", style: { height: "33vh", ...centerStyles } },
+    text("Hover me"),
+  ),
+);
+document.body.appendChild(
+  el(
+    "div",
+    { id: "bar", style: { height: "33vh", ...centerStyles } },
+    text("Hover me"),
+  ),
+);
+document.body.appendChild(
+  el(
+    "div",
+    { id: "baz", style: { height: "33vh", ...centerStyles } },
+    text("Hover me"),
+  ),
+);
 
 // Adapted/ported from the wiki page on linear interpolation: https://en.wikipedia.org/wiki/Linear_interpolation
 function lerp(v0, v1, t) {
@@ -164,26 +180,37 @@ function lerp(v0, v1, t) {
 }
 
 const color = [];
-on([document.getElementById('foo'), document.getElementById('bar'), document.getElementById('baz')], 'mousemove', (e) => {
+on(
+  [
+    document.getElementById("foo"),
+    document.getElementById("bar"),
+    document.getElementById("baz"),
+  ],
+  "mousemove",
+  (e) => {
     const element = e.currentTarget;
-    const {x, width, y, height} = element.getBoundingClientRect();
-    const pulseTimeMS = 1000 * 60 // complete lightnesss pulse every minute
-    const lightness = lerp(0,100,(Date.now() % (pulseTimeMS)) / pulseTimeMS).toFixed(2);
-    const colors = `hsl(${lerp(0,360, (e.clientX - x) / width).toFixed(2)}, ${lerp(0,100, (e.clientY - y) / height).toFixed(2)}%, ${lightness}%)`;
-    element.style['background-color'] = colors;
+    const { x, width, y, height } = element.getBoundingClientRect();
+    const pulseTimeMS = 1000 * 60; // complete lightnesss pulse every minute
+    const lightness = lerp(
+      0,
+      100,
+      (Date.now() % pulseTimeMS) / pulseTimeMS,
+    ).toFixed(2);
+    const colors = `hsl(${lerp(0, 360, (e.clientX - x) / width).toFixed(2)}, ${lerp(0, 100, (e.clientY - y) / height).toFixed(2)}%, ${lightness}%)`;
+    element.style["background-color"] = colors;
     element.innerHTML = "";
-    element.appendChild(el('div', {
-        style: {
+    element.appendChild(
+      el(
+        "div",
+        {
+          style: {
             ...centerStyles,
-            "color": `hsl(0, 0%, ${(100 - lightness)}%)`
-        }
-    },
-    text(colors)))
-})
+            color: `hsl(0, 0%, ${100 - lightness}%)`,
+          },
+        },
+        text(colors),
+      ),
+    );
+  },
+);
 ```
-
-
-
-
-
-

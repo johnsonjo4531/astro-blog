@@ -1,7 +1,7 @@
 title: Sudoku Solver
 type: internal
 contentSlug: sudoku-solver
-href: /sudoku/
+href: /experiments/sudoku/
 timetext: During my CS education at USU
 description: >
   I used Knuth's algorithm X with Dancing Links. Algorithm X with Dancing Links is a fairly efficient educated brute forcing back-tracking algorithm

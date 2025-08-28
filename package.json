@@ -10,27 +10,30 @@
     "build:astro": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "build:vite": "vite build"
+    "build:vite": "vite build experiments-static/*"
   },
   "engines": {
     "node": ">=16.12.0"
   },
   "dependencies": {
-    "@astrojs/mdx": "^1.1.2",
-    "@astrojs/react": "^3.0.3",
+    "@astrojs/mdx": "^4.3.4",
+    "@astrojs/react": "^4.3.0",
     "@rollup/plugin-yaml": "^4.1.2",
-    "@types/react": "^18.2.30",
-    "@types/react-dom": "^18.2.14",
-    "astro": "^3.4.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.8",
+    "astro": "^5.13.4",
     "css-doodle": "^0.37.3",
-    "katex": "^0.16.9",
+    "katex": "^0.16.22",
     "process": "^0.11.10",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "rehype-katex": "^7.0.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "rehype-katex": "^7.0.1",
     "remark-codesandbox": "^0.10.1",
-    "remark-directive": "^3.0.0",
-    "remark-math": "^5.0.0",
-    "typescript": "^5.2.2"
+    "remark-directive": "^4.0.0",
+    "remark-html": "^16.0.1",
+    "remark-math": "^6.0.0",
+    "remark-rehype": "^11.1.2",
+    "remark-spoiler": "^1.0.6",
+    "typescript": "^5.9.2"
   }
 }

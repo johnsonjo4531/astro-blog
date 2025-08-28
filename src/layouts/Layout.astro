@@ -6,7 +6,7 @@ export interface Props {
 const { title } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -176,8 +176,15 @@ const { title } = Astro.props;
     }
   }
   code {
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
   }
   .hexagon-clip {
     --hexagon-slant: 25%;
@@ -257,7 +264,7 @@ const { title } = Astro.props;
     content: "";
     width: 100%;
     height: 100%;
-    position: ;
+    position:;
   }
 
   .container {
@@ -357,6 +364,20 @@ const { title } = Astro.props;
     border-radius: 6px;
     border: 6px solid rgba(var(--current-bg), 0.1);
   }
+
+  input {
+    cursor: pointer;
+    font-size: 1em;
+    background-color: rgba(var(--current-bg), 0.3);
+    color: rgba(var(--opposite-bg));
+    backdrop-filter: blur(5px);
+    padding: 7px 3px;
+    border-radius: 6px;
+    min-width: 300px;
+    max-width: 50%;
+    border: 6px solid rgba(var(--current-bg), 0.1);
+  }
+
   .astro-code {
     backdrop-filter: blur(4px);
     border-radius: 12px;

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Brick Breaker</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="assets/fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome.css"
+    />
+    <link
+      rel="stylesheet"
+      href="assets/fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome-all.min.css"
+    />
+  </head>
+  <body>
+    <div id="gameplay-container">
+      <div id="volume-toggle" class="on">
+        <i class="volume-on fa-3x fas fa-volume-up"></i
+        ><i class="volume-off fa-3x fas fa-volume-off"></i>
+      </div>
+      <div class="hidden" data-view="CreditsView" id="credit-display">
+        <p>Gameplay: John Johnson - made for USU CS 5410</p>
+        <p>
+          Gameplay Music: Eric Skiff - A Night of Dizzy Spells - Resistor
+          Anthems - Available at
+          <a href="http://EricSkiff.com/music">http://EricSkiff.com/music</a>
+        </p>
+        <p>
+          Menu Music: Eric Skiff - All of Us - Resistor Anthems - Available at
+          <a href="http://EricSkiff.com/music">http://EricSkiff.com/music</a>
+        </p>
+        <p>
+          Sound Effects: LittleRobotSoundFactory - Available at
+          <a href="https://freesound.org/people/LittleRobotSoundFactory/"
+            >https://freesound.org/people/LittleRobotSoundFactory/</a
+          >
+        </p>
+        <p>
+          Font: CodeMan38 - Press Start 2P - Available at
+          <a href="https://fonts.google.com/specimen/Press+Start+2P"
+            >https://fonts.google.com/specimen/Press+Start+2P</a
+          >
+        </p>
+        <p>
+          Backgrounds: Atle Mo - Congruent Pentagon (CP) and Congruent Pentagon
+          Outline (CPO) - Available
+          <a
+            href="https://www.toptal.com/designers/subtlepatterns/congruent-pentagon/"
+            >here (CP)</a
+          >
+          and
+          <a
+            href="https://www.toptal.com/designers/subtlepatterns/congruent-pentagon-outline/"
+            >here (CPO)</a
+          >.
+        </p>
+        <button class="selected" data-view-transition="MenuView">
+          Main Menu
+        </button>
+      </div>
+      <div class="hidden" data-view="ControlsView" id="controls-menu">
+        <h2>Controls</h2>
+        <!--See ButtonMenu.js implementation for controls-->
+        <h3>Game Controls</h3>
+        <h4>Paddle left: ← (arrow key)</h4>
+        <h4>Paddle right: → (arrow key)</h4>
+        <h4>Pause: Escape</h4>
+        <h3>Menu Controls</h3>
+        <h4>Menu up: ↑ (arrow key)</h4>
+        <h4>Menu down: ↓ (arrow key)</h4>
+        <h4>Menu Select: Enter</h4>
+        <h4>Menu Exit: Escape</h4>
+        <button data-view-transition="MenuView">Main Menu</button>
+      </div>
+      <noscript> This game is only available with JavaScript enabled </noscript>
+      <div class="hidden" data-view="MenuView" id="game-menu">
+        <h1>Brick Breaker</h1>
+        <!--See ButtonMenu.js implementation for controls-->
+        <button data-view-transition="GameView">Play Game</button>
+        <button data-view-transition="HighScoresView">High Scores</button>
+        <button data-view-transition="ControlsView">Controls</button>
+        <button data-view-transition="CreditsView">Credits</button>
+      </div>
+      <div data-view="HighScoresView" id="high-scores-display" class="hidden">
+        <div class="js-scoreboard-here"></div>
+        <button data-view-transition="MenuView">Main Menu</button>
+        <button id="js-reset-scores">Reset Scores</button>
+      </div>
+      <div data-view="GameView" id="game-screen" class="hidden">
+        <div id="game-overlay">
+          <div data-view="EmptyView" class="hidden"></div>
+          <div data-view="GameOverView" id="game-over-view" class="hidden">
+            <h2 id="game-over-header">Game Over</h2>
+            <h3 class="js-score-quip-here"></h3>
+            <h5>Score: <span class="js-score-here">0</span></h5>
+            <button data-view-transition="GameView">Play Again</button>
+            <button data-view-transition="MenuView">Main Menu</button>
+          </div>
+          <div data-view="PauseView" class="hidden" id="pause-view">
+            <h2>Paused</h2>
+            <h5>Score: <span class="js-score-here"></span></h5>
+            <button data-view-transition="EmptyView">Resume</button>
+            <button data-view-transition="MenuView">Main Menu</button>
+          </div>
+        </div>
+        <canvas width="1777" height="1000" id="game-canvas"></canvas>
+      </div>
+    </div>
+    <!--Gameplay scripts-->
+    <script type="module" src="modules/Geometry.js"></script>
+    <script type="module" src="modules/KeyboardHandler.js"></script>
+    <script type="module" src="modules/GameRenderer.js"></script>
+    <script type="module" src="modules/ParticleSystem.js"></script>
+    <script type="module" src="modules/GameState.js"></script>
+    <script type="module" src="modules/GameActions.js"></script>
+    <script type="module" src="modules/GameLoop.js"></script>
+    <!--Misc scripts-->
+    <script type="module" src="modules/throttle.js"></script>
+    <script type="module" src="modules/ScoreBoard.js"></script>
+    <script type="module" src="modules/AudioAsset.js"></script>
+    <script type="module" src="modules/AudioPool.js"></script>
+    <script type="module" src="modules/ImageAsset.js"></script>
+    <script type="module" src="modules/escapeHtml.js"></script>
+    <script type="module" src="modules/Random.js"></script>
+    <script type="module" src="modules/Modal.js"></script>
+    <script type="module" src="modules/PromptScreen.js"></script>
+    <script type="module" src="modules/$.js"></script>
+    <script type="module" src="modules/Events.js"></script>
+    <script type="module" src="modules/ButtonMenu.js"></script>
+    <!--View scripts-->
+    <script type="module" src="modules/ViewStarters.js"></script>
+    <script type="module" src="modules/MenuView.js"></script>
+    <script type="module" src="modules/GameView.js"></script>
+    <script type="module" src="modules/ViewSwitcher.js"></script>
+    <!--Initialization script-->
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

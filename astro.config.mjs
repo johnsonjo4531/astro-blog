@@ -7,51 +7,62 @@ import mdx from "@astrojs/mdx";
 import remarkDirective from "remark-directive";
 import { visit } from "unist-util-visit";
 import { h } from "hastscript";
-
 import react from "@astrojs/react";
+import remarkHtml from "remark-html";
+import remarkRehype from "remark-rehype";
+import { fromMarkdown } from "mdast-util-from-markdown";
+import { toHtml } from "hast-util-to-html";
+import { toHast } from "mdast-util-to-hast";
+
+function getExperiment(name) {
+  return `experiments-static/${"" + name}`;
+}
 
 /** */
-function myHTMLPlugin() {
-  /**
-   * @param {import('mdast').Root} tree
-   *   Tree.
-   * @returns {undefined}
-   *   Nothing.
-   */
-  return function (tree) {
-    visit(tree, function (node) {
-      if (
-        node.type === "containerDirective" ||
-        node.type === "leafDirective" ||
-        node.type === "textDirective"
-      ) {
-        const data = node.data || (node.data = {});
-        const hast = h(node.name, node.attributes || {});
 
-        data.hName = hast.tagName;
-        data.hProperties = hast.properties;
+/**
+ * A remark plugin that converts ::: blocks into <div className="spoiler">...</div>
+ */
+export function remarkSpoiler() {
+  return (tree) =>
+    visit(tree, "paragraph", (node, index, parent) => {
+      if (
+        !parent ||
+        !Array.isArray(node.children) ||
+        node.children.length !== 1
+      )
+        return;
+
+      const child = node.children[0];
+      if (child.type !== "text") return;
+
+      const value = child.value.trim();
+      if (
+        value.startsWith(":::") &&
+        value.endsWith(":::") &&
+        value.length > 6
+      ) {
+        const innerText = value.slice(3, -3).trim();
+
+        const mdast = fromMarkdown(innerText);
+        const hast = toHast(mdast);
+        const innerHtml = toHtml(hast);
+
+        parent.children[index] = {
+          type: "html",
+          value: `<details>
+            <summary>Click for potential spoilers</summary>
+            ${innerHtml}
+          </details>`,
+        };
       }
     });
-  };
 }
 
 // https://astro.build/config
 
 // https://astro.build/config
 export default defineConfig({
-  vite: {
-    plugins: [yaml()],
-    // build: {
-    //   rollupOptions: {
-    //     input: {
-    //       ["brick-breaker"]: getExperiment("brick-breaker"),
-    //       ["maze-solver"]: getExperiment("maze-solver"),
-    //       ["snake"]: getExperiment("snake"),
-    //       ["sudoku"]: getExperiment("sudoku"),
-    //     },
-    //   },
-    // },
-  },
   // markdown: {
   //   remarkPlugins: [
   //     remarkMath,
@@ -72,7 +83,7 @@ export default defineConfig({
       remarkPlugins: [
         remarkMath,
         remarkDirective,
-        myHTMLPlugin,
+        remarkSpoiler,
         // [
         //   remarkSpoiler,
         //   {
