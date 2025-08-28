@@ -13,7 +13,7 @@
     "build:vite": "vite build experiments-static/*"
   },
   "engines": {
-    "node": ">=16.12.0"
+    "node": ">=v22.18.0"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.4",
