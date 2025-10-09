@@ -43,7 +43,6 @@ export const components = {
 </BlogPostLayout>
 
 <style is:global>
-
   details {
     position: relative;
     padding: 0.7em;
@@ -55,13 +54,13 @@ export const components = {
     margin: 1.7em 0;
   }
   summary {
-    margin: -0.7em -0.7em -0.7em -1.7em;   
+    margin: -0.7em -0.7em -0.7em -1.7em;
     padding: 0.7em 0.7em 0.7em 1.7em;
     background-color: rgba(var(--accent-bg), 0.2);
     border-radius: 12px;
     cursor: pointer;
   }
-  details[open] summary{
+  details[open] summary {
     border-radius: 12px 12px 0 12px;
   }
   details::before {
@@ -73,5 +72,8 @@ export const components = {
     width: 1.2em;
     border-radius: 12px 0 0 12px;
     background-color: var(--info-color);
+  }
+  img {
+    max-width: 100%;
   }
 </style>
