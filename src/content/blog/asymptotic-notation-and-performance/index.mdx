@@ -1,0 +1,292 @@
+---
+title: Asymptotic Notation and Performance
+date: 2025-10-08T22:23:59.894Z
+published: true
+description: >
+  If you've ever heard the phrase "premature optimization is the root of all evil" in programming and wondered, "How do I know if I am optimizing prematurely?",
+  then this article is for you! The main way the subject of optimization is usually explained in a computer science way is through Big O notation.
+  
+  There are two things generally optimized and looked at with Big O notation at that is typically the memory and runtime constraints of the program.
+
+tags:
+  - programming
+  - math
+  - asymptotic notation
+  - big o
+  - computational complexity
+---
+
+
+If you've ever heard the phrase "premature optimization is the root of all evil" in programming and wondered, "How do I know if I am optimizing prematurely?",
+then this article is for you! The main way the subject of optimization is usually explained in a computer science way is through Big O notation.
+
+There are two things generally optimized and looked at with Big O notation at that is typically the memory and runtime constraints of the program. These generally only are needed if $n$ is larger than some number, but sometimes with some algorithms $n$ is getting large even with $n$ values as small as 10 (which is justified by the table below).
+
+I love the table in the ["Competitive Programmer's Handbook" by Antti Laaksonen](https://cses.fi/book/index.php) which gives you the rough estimate of how long it takes for an algorithm to run in one second in terms of n in each of these time complexities. 
+
+| input size | required time complexity |
+|------------|--------------------------|
+| $n \leq 10$ | $O(n!)$ |
+| $n \leq 20$ | $O(2^n)$ |
+| $n \leq 500$ | $O(n^3)$ |
+| $n \leq 5000$ | $O(n^2)$ |
+| $n \leq 10^6$ | $O(n \log n)$ or $O(n)$ |
+| $n$ is large | $O(1)$ or $O(\log n)$ |
+
+
+For a computer a second sometimes feels like an eternity and with larger n than those $O(n^2)$ and worse runtimes blow up as $n$ increases with exponentially worse runtimes and memory use. So, the main way to know if you are optimizing prematurely is to know the size of you $n$ and the runtime and space/memory of your algorithm. If your $n$ is sufficiently large for the runtime or space of your algorithm you may need to search for a better algorithm or depending on your problem you will have to lower your $n$ to make things more bearable for a user. Of course in practice sometimes things turn out differently than in theory so also try and optimize only that which is causing an issue for you. This article is more concerned with predicting optimization problems that will occur from different classes of algorithms.
+
+If you don't yet know what I'm even talking about with "Big O" notation then I'll explain briefly. "Big O" notation, allows one to see the runtime (or space/memory used) by calculating it in terms of all it's relevant inputs (sometimes denoted as $n$, $m$, $k$, etc.). The idea is that when $n$ grows large the runtime of the algorithm according to the different Big O notations vary largely from each other  $O(1)$, $O(\log n)$, $O(n)$,  $O(n \log n)$, $O(n^2)$, etc.
+
+
+![Comparison computational complexity](https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Comparison_computational_complexity.svg/512px-Comparison_computational_complexity.svg.png?20170623110746)
+[Cmglee](https://commons.wikimedia.org/wiki/User:Cmglee), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0), via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Comparison_computational_complexity.svg)
+
+Here are some examples of each class of algorithm (given by GPT-5, but checked by me for correctness)
+
+| Time Complexity | Examples |
+|-----------------|-----------------|
+| $O(n!)$ | Brute-force algorithms that generate all permutations or orders — e.g. solving the traveling salesman problem by trying every possible route. |
+| $O(2^n)$ | Exponential recursive algorithms exploring all subsets or combinations — e.g. the naive recursive solution to the subset sum or Fibonacci problem. |
+| $O(n^3)$ | Triple nested loops or dense matrix operations — e.g. Floyd–Warshall algorithm for all-pairs shortest paths. |
+| $O(n^2)$ | Quadratic loops or pairwise comparisons — e.g. bubble sort, insertion sort, or checking every pair in a list. |
+| $O(n \log n)$ | Efficient divide-and-conquer sorts — e.g. merge sort, quicksort (average case), or balanced tree operations. |
+| $O(n)$ | Linear scans through input — e.g. finding a maximum value, summing a list, or copying an array. |
+| $O(\log n)$ | Repeatedly halving the problem size — e.g. binary search or operations on balanced binary trees. |
+| $O(1)$ | Constant-time operations — e.g. array indexing, hash map lookups, or simple arithmetic operations. |
+
+Here is a better explanation of deciding when your algorithm applies to one of the classes:
+
+| Time Complexity | When it applies |
+|-----------------|-----------------|
+| $O(n!)$ | Visiting each element of a permutation is a good example as $n \cdot (n-1) \cdot \ldots \cdot 1$ iterations happen |
+| $O(2^n)$ | When your problem visits branches off twice per each element in your list |
+| $O(n^3)$ | Triple nested loops where each loop visits $n$ times (or whenever you visit each triple of the $n$ elements). |
+| $O(n^2)$ | Two nested loops where each loop visits $n$ times (or whenever you visit each pair of possible $n$ elements) |
+| $O(n \log n)$ | When a loop that loops for each of the $n$ elements happens but for each loop you do a $O(\log n)$ algorithm |
+| $O(n)$ | Visiting each element of the input once, twice, or up to $k$ times where $k$ is a constant and does not vary like a variable ($k$ is not relative to the input size). |
+| $O(\log n)$ | Repeatedly halving, cutting into thirds, cutting into $k$ slices (again where $k$ is some constant) where the cuts start from $n$ elements and shrink to 0. |
+| $O(1)$ | Things that themselves are not relative to any variable input size they are given. |
+
+For example if you know a little bit of asymptotic notation (a.k.a. Big O notation), you'll be able to know the difference between an algorithm that runs in $O(n)$ vs. $O(n^2)$ or any of the other forms which mainly has to do with the formal analysis of meaningful relative changes in performance of algorithms, in computer science than you know the difference between $O(n)$ (pronounced "big o of n"). If you don't yet know the difference in time complexities stick around as I will take the rest of the article explaining them. As an example something like this is in JavaScript is $O(n)$ time complexity and should run in under one second:
+
+```ts
+// Add the triangle numbers 1 + 2 + 3 + ... + n
+function triangleNumbers (n) {
+  let sum = 0n;
+  for(let i = 0n; i <= n; ++i) {
+    // Do some simple operations but no more looping.
+    sum += i;
+  }
+  return sum;
+}
+
+console.time("triangle numbers");
+console.log(triangleNumbers(1_000_000n));
+console.timeEnd("triangle numbers");
+```
+
+Notice how the above function's input grows with n so calling it with larger n will take even longer. I've noticed on my machine I was also able to change n to be $100,000,000$ and was able to go a bit above a second time.
+
+or this even is still $O(n)$ time complexity:
+
+```ts
+// Add the triangle numbers twice.
+function twoTriangles (n) {
+  let sum = 0n;
+  for(let i = 0n; i <= n; ++i) {
+    // Do some simple operations but no more looping.
+    sum += i;
+  }
+  for(let i = 0n; i <= n; ++i) {
+    // Do some simple operations but no more looping.
+    sum += i;
+  }
+  return sum;
+}
+
+twoTriangles(1_000_000n);
+```
+
+> Note you may be looking at the above and thinking it's $O(n+n)$ or $O(2n)$ the reason it is not usually written that way is because they simplify to the same thing $O(2n) \implies O(n)$. So, given any equation in Big O notation we typically only concern ourselves with the variable input with the largest exponent and drop all constants and coefficients this keeps our focus on relative growth of time/space taken for the function to run with large inputs.
+
+The above will still run in roughly a second or so. 
+
+And something like the below which is $O(nm)$ or just $O(n^2)$ if both inputs are believed to be picked as roughly the same (there is no constraint that makes n or m significantly less than one another). The below runs in roughly a second with it's two inputs of $n$ and $m$ of 5,000:
+
+```ts
+// Figure out how many combinations of m and n there are.
+function combinations (n, m) {
+  let sum = 0;
+  for(let i = 0; i < n; ++i) {
+    for(let i = 0; i < m; ++i) {
+      // Do some simple operations but no more looping.
+      sum += 1;
+    }
+  }
+  return sum;
+}
+
+console.log(combinations(5_000, 5_000));
+```
+
+Oof did you notice something about that. That is a horribly ineffecient way to compute something that could other wise be done in $O(1)$ (a.k.a. constant time the most performant class of algorithm) saving us many precious cpu cycles and saving us our valued time:
+
+```ts
+function combinationsFast (n, m) {
+  return n * m;
+}
+
+console.log(combinationsFast(5_000, 5_000));
+```
+
+Not always can we change an algorithm so that it can fit into a lower time/space complexity, but sometimes we can and this can often lead to huge speed ups or huge gains in the amount of unused memory.
+
+In fact with the two other algorithms I gave above you could also change them to be done in $O(1)$ a.k.a. constant time.
+
+```ts
+function triangleNumbersFast (n) {
+  return n * (n + 1n) / 2n;
+}
+
+console.log(triangleNumbersFast(1_000_000n));
+```
+
+That equation you can read more about on the [triangular numbers wiki page](https://en.wikipedia.org/wiki/Triangular_number), but I'll shortly justify this by saying (n + 1) is the addition of each pair of elements as you go from both sides of $1+2+\ldots+n$ inward (Say n is 100 then 1 + 100 would be the two outermost, then 99 + 2, then 98 + 3, etc.) and since you are pairing them you make $\frac{n}{2}$ pairs then you combine those two phenomena with multiplication like $\frac{n(n + 1)}{2}$. 
+
+Then we can also change `twoTriangles` to be faster by applying the same logic but timesing $\frac{n(n+1)}{2}$ by $2$ giving us just $n(n+1)$ again making it $O(1)$.
+
+```ts
+function twoTrianglesFast (n) {
+  return n * (n + 1n);
+} 
+
+console.log(twoTrianglesFast(1_000_000n));
+```
+
+There are some trickier things to recognize how fast they run given big O notation, specifically with time complexity we are looking at the asymptotic (whether $O(1)$, $O(n)$, $O(n^2)$, etc.) times it loops total given it's input. So, since that is the definition what I'll try to point out is that sometimes the number of nested loops tells you such a thing but sometimes it does not.
+
+For example this is still $O(1)$ (yes I know it could have more obviously been written in constant time, but my point is that a loop
+doesn't always signify that it is no longer constant time.)
+
+```ts
+// Sum the triangle numbers eight times.
+function eightTriangles (n) {
+  let sum = 0;
+  for(let i = 0; i < 8; ++i) {
+    sum += n * (n + 1) / 2;
+  }
+  return sum;
+}
+
+console.log(eightTriangles(100));
+```
+
+The idea above is that since 8 is a constant itself and does not vary like a variable its effects on the algorithm are minimal so it is still $O(1)$.
+
+This next one is $O(k)$ even though it has two inputs of $n$ and $k$ n is basically ignored in the runtime of the algorithm.
+
+```ts
+function kTriangles (n, k) {
+  let sum = 0;
+  for(let i = 0; i < k; ++i) {
+    sum += n * (n + 1) / 2;
+  }
+  return sum
+}
+
+console.log(kTriangles(100, 1));
+```
+
+Now as far as space goes for storing things in memory everyone of our previous examples has been $O(1)$ with memory. That is to say according to its inputs it has only ever used a constant amount of memory. Also that is also showing that this Big O notation will work for memory growth as well over the life of an algorithm. 
+
+Here is an algorithm that sums numbers it is $O(n)$ in both time and space/memory.
+
+```ts
+function sum (nums) {
+  let sum = 0;
+  for(let i = 0; i < nums.length; ++i) {
+    sum += nums[i];
+  }
+  return sum;
+}
+
+console.log(sum([10,2,3,6,8,20]));
+```
+
+The above is $O(n)$ where $n$ this time is the length of the number of items in the array. As you can tell we loop over each of the $n$ items in the array atleast once per $n$ items giving us $O(n)$ in time complexity. As you can see however large the array grows every item in the $n$ item array has to be stored in memory at least once therefore the memory is $O(n)$ as well.
+
+Could we optimize the above? Not really as long as the items in the array are basically random summing items always has to go through and visit each item. However, we did see before that under special circumstances there may be a way to optimize the summing of items like in the case of the triangle numbers other examples of sums that can be turned into $O(1)$ are any arithmetic progressions (like the triangle numbers) or geometric progressions which are both outlined in chapter 1 with subsection Mathematics of the ["Competitive Programmer's Handbook" by Antti Laaksonen](https://cses.fi/book/index.php) generally since you only need to know the start and end point of such numbers and don't actually have to store the numbers themselves you would also get a space complexity of $O(1)$ in those circumstances as well.
+
+When proving the runtime of algorithms you can know by finding an example that the runtime is at least that good this is like the upper bound of the runtime, but it is sometimes harder to prove the lower bound of the runtime. When the upper and lower bound meet you generally know for sure the max runtime of your algorithm. This is generally proving it is both sufficient (upper bound) to solve the algorithm a certain way, and necessary (lower bound [which is honestly much harder to prove]) to solve it a certain way as well. Another note is that Big O only measures the worst case runtimes, so using worst case analysis means you are finding an algorithm that no matter how adversarially chosen its inputs are it will be guaranteed to be at least that fast (it's the upper-bound of the runtime itself.) Big Omega ($\Omega(n)$) is actually what we are talking about when we say the lower bound has been hit. There are honestly not that many lower bounds that are known in Computer Science ([see here](https://cs.stackexchange.com/questions/38357/is-it-really-possible-to-prove-lower-bounds)), but one such is if you need something sorted that isn't sorted or structured in some way then the Big Omega is always $\Omega(n \log n)$.
+
+An adjacent idea to the last paragraph is that with Big O notation (upper bounds) you have to find an example that exists that says it fits that upper bound, but for Big Omega (lower bounds) you have to conceptually prove there is no class of an algorithm that could possibly solve it any faster (which again is why it's much harder...)
+
+I hesitate to show these last two as I don't want to explain recursion in this article, but if you've gotten this far that shows your dedication, so I will share anyways. Please don't let recursion scare you if you've never seen it before, but make it an object of study for a bit, because though you can usually avoid it sometimes it makes for more elegant, shorter, and understandable algorithms. Of course Fibonacci is a classic and is often shown with it's $O(2^n)$ time algorithm. The fibonacci numbers are recursive in nature. It is a sequence that goes 0,1,1,2,3,5,8,13,...etc. where the third and later elements are computed via the sum of the previous two elements (and only the sum of the previous two elements).
+
+This is expressed mathematically as:
+
+$$
+F(0) = 0 \\
+F(1) = 1 \\
+F(n) = F(n - 1) + F(n - 2)
+$$
+
+Here is the common programming implementation which again is $O(2^n)$:
+
+```ts
+function fib (n) {
+  // Base cases
+  if(n <= 0) return 0;
+  if(n == 1) return 1;
+  // Recursive step
+  return fib(n - 1) + fib(n - 2);
+}
+
+console.log(fib(10));
+```
+
+There are actually much faster ways to compute the fibonacci numbers precisely (matrix exponentiation) and imprecisely (with the closed form formula and it's only imprecise due to floating point arithmetic errors that computers have.)
+
+The last algorithm we'll show is merge sort it's a classic in computer science as well and like most performant sorting algorithms that make no assumptions about it's input it runs in $O(n \log n)$:
+
+```ts
+function mergeSort (nums) {
+  if(nums.length <= 1) {
+    // An array of length 1 is already sorted and therefore does not need to be split in half and sorted.
+    return nums;
+  }
+  // The invariant (i.e. a known property) at this point is the array has atleast two elements.
+  let mid = Math.floor(nums.length / 2);
+  // Sort the left half of the array.
+  let left = mergeSort(nums.slice(0, mid));
+  // Sort the right half of the array.
+  let right = mergeSort(nums.slice(mid));
+  // The invariant (i.e. a known property) at this point is the left and right sides are now sorted.
+  // From here to the end of the function actually do the sorting now for this recursive step
+  // thus making the whole array up to this point sorted...
+  let merged = [];
+  
+  let l = 0;
+  let r = 0;
+  // We know left and right are sorted so all we have to do is combine/merge them together.
+  // This section of the algorithm is $O(n)$
+  while(l < left.length || r < right.length) {
+    const leftItem = left[l] ?? Infinity;
+    const rightItem = right[r] ?? Infinity;
+    // Flip this <= to >= for descending instead of ascending order.
+    if(leftItem <= rightItem) {
+      merged.push(leftItem);
+      l++;
+    } else {
+      merged.push(rightItem);
+      r++;
+    }
+  }
+  return merged;
+}
+
+console.log(mergeSort([5,2,3,1]));
+```
+
+Each time it iterates down recursively it splits the items it's looking at in half therefore it's like a tree of depth $\log n$ (it can only split every one of the arrays of $n$ items only $log_2(n)$ times), but at each depth it operates on $n$ items thus it is $O(n \log n)$
